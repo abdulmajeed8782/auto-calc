@@ -1,1 +1,1 @@
-# auto-calc
+# calculator
