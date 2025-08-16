@@ -36,12 +36,6 @@
     "fileName": "loan-calculator.html"
   },
   {
-    "name": "Mango Multiply Calculator",
-    "description": "A fun calculator to see how many mangoes you'd have if they multiplied.",
-    "category": "fun",
-    "fileName": "mango-calculator.html"
-  },
-  {
     "name": "Percentage Calculator",
     "description": "Calculate percentages, percentage increase/decrease, and find what percentage one number is of another.",
     "category": "math",
