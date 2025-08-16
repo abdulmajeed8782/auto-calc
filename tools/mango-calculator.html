@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- =================================================================== -->
+    <!-- META TAGS FOR AUTOMATION - This is what your script will read -->
+    <!-- =================================================================== -->
+    <meta name="calculator-name" content="Mango Multiply Calculator">
+    <meta name="calculator-description" content="A fun calculator to see how many mangoes you'd have if they multiplied.">
+    <meta name="calculator-category" content="fun">
+    <!-- =================================================================== -->
+
+    <title>Mango Multiply Calculator</title>
+
+    <style>
+        /* Basic CSS for a clean, modern look (from your template) */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        .calculator-container {
+            background-color: #ffffff;
+            padding: 2rem 3rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h1 {
+            color: #1a253c;
+            margin-bottom: 1.5rem;
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #dcdfe2;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #ff9d00;
+            box-shadow: 0 0 0 3px rgba(255, 157, 0, 0.15);
+        }
+        button {
+            width: 100%;
+            padding: 0.85rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            background-color: #ff9d00;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 1.5rem;
+        }
+        button:hover {
+            background-color: #e68e00;
+        }
+        .results {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        .result-item {
+            font-size: 1.2rem;
+        }
+        .result-item span {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff9d00;
+            margin-bottom: 0.5rem;
+            word-wrap: break-word;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h1>Mango Multiply Calculator 🥭</h1>
+        
+        <form id="mangoForm">
+            <div class="input-group">
+                <label for="initialMangoes">How many mangoes do you have?</label>
+                <input type="number" id="initialMangoes" placeholder="e.g., 5" min="0" required>
+            </div>
+            <div class="input-group">
+                <label for="multiplier">How many times should they multiply?</label>
+                <input type="number" id="multiplier" placeholder="e.g., 10" min="0" required>
+            </div>
+            <button type="submit">Multiply the Mangoes!</button>
+        </form>
+        
+        <div class="results">
+            <div class="result-item">
+                <span id="totalMangoes">0</span>
+                Total Mangoes
+            </div>
+        </div>
+        
+        <a href="../index.html" class="back-link">← Back to Calculator Hub</a>
+    </div>
+
+    <script>
+        // Self-contained JavaScript for the calculator functionality
+        const mangoForm = document.getElementById('mangoForm');
+        const initialMangoesEl = document.getElementById('initialMangoes');
+        const multiplierEl = document.getElementById('multiplier');
+        const totalMangoesEl = document.getElementById('totalMangoes');
+
+        mangoForm.addEventListener('submit', (e) => {
+            // Prevent the form from actually submitting and reloading the page
+            e.preventDefault();
+
+            const initialCount = parseInt(initialMangoesEl.value, 10);
+            const multiplier = parseInt(multiplierEl.value, 10);
+
+            // Check if the inputs are valid numbers
+            if (isNaN(initialCount) || isNaN(multiplier) || initialCount < 0 || multiplier < 0) {
+                totalMangoesEl.textContent = 'Invalid';
+                return;
+            }
+
+            const total = initialCount * multiplier;
+            
+            // Display the result with a comma for thousands
+            totalMangoesEl.textContent = total.toLocaleString();
+        });
+    </script>
+
+</body>
+</html>
