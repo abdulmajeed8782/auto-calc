@@ -30,6 +30,12 @@
     "fileName": "grade-calculator.html"
   },
   {
+    "name": "loan-calculator",
+    "description": "A simple loan calculator to test automation scripts.",
+    "category": "loan",
+    "fileName": "loan-calculator.html"
+  },
+  {
     "name": "Mango Multiply Calculator",
     "description": "A fun calculator to see how many mangoes you'd have if they multiplied.",
     "category": "fun",
