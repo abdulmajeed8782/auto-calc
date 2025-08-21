@@ -30,12 +30,6 @@
     "fileName": "grade-calculator.html"
   },
   {
-    "name": "Loan Calculator",
-    "description": "Calculate monthly payments, total interest, and payment schedules for loans and mortgages.",
-    "category": "finance",
-    "fileName": "loan-calculator.html"
-  },
-  {
     "name": "Mango Multiply Calculator",
     "description": "A fun calculator to see how many mangoes you'd have if they multiplied.",
     "category": "fun",
