@@ -18,6 +18,12 @@
     "fileName": "bmi-calculator.html"
   },
   {
+    "name": "Automation Test Calculator",
+    "description": "A simple loan calculator to test automation scripts.",
+    "category": "testing",
+    "fileName": "calculator.html.html"
+  },
+  {
     "name": "Currency Converter",
     "description": "Convert between different currencies with real-time exchange rates.",
     "category": "finance",
