@@ -72,6 +72,12 @@
     "fileName": "percentage-calculator.html"
   },
   {
+    "name": "severance-pay-calculator",
+    "description": "Calculates the severance pay amount based on employment duration, salary, and other factors.",
+    "category": "finance",
+    "fileName": "severance-pay-calculator.html"
+  },
+  {
     "name": "theoretical-yield-calculator",
     "description": "Calculates theoretical chemical yield based on reagent parameters and stoichiometry.",
     "category": "science",
