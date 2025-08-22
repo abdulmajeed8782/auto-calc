@@ -6,6 +6,12 @@
     "fileName": "Automation-Test-Calculator.html"
   },
   {
+    "name": "age-calculator",
+    "description": "Calculates a person's age based on their date of birth and a target date.",
+    "category": "health",
+    "fileName": "age-calculator.html"
+  },
+  {
     "name": "aida-fabric-calculator",
     "description": "Calculates required fabric dimensions and recommendations for cross stitch projects based on stitch counts and Aida cloth specifications.",
     "category": "converter",
