@@ -6,12 +6,6 @@
     "fileName": "Automation-Test-Calculator.html"
   },
   {
-    "name": "aida-fabric-calculator",
-    "description": "Calculates required fabric dimensions and recommendations for cross stitch projects based on stitch counts and Aida cloth specifications.",
-    "category": "converter",
-    "fileName": "aida-fabric-calculator.html"
-  },
-  {
     "name": "Basic Calculator",
     "description": "Perform basic arithmetic operations like addition, subtraction, multiplication, and division.",
     "category": "math",
