@@ -42,12 +42,6 @@
     "fileName": "mango-calculator.html"
   },
   {
-    "name": "percent-yield-calculator",
-    "description": "Calculates actual, theoretical, or percent yield for chemical reactions based on user-selected parameters.",
-    "category": "chemistry",
-    "fileName": "percent-yield-calculator.html"
-  },
-  {
     "name": "Percentage Calculator",
     "description": "Calculate percentages, percentage increase/decrease, and find what percentage one number is of another.",
     "category": "math",
