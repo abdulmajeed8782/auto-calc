@@ -6,6 +6,12 @@
     "fileName": "Automation-Test-Calculator.html"
   },
   {
+    "name": "aida-fabric-calculator",
+    "description": "Calculates required fabric dimensions and recommendations for cross stitch projects based on stitch counts and Aida cloth specifications.",
+    "category": "converter",
+    "fileName": "aida-fabric-calculator.html"
+  },
+  {
     "name": "Basic Calculator",
     "description": "Perform basic arithmetic operations like addition, subtraction, multiplication, and division.",
     "category": "math",
@@ -16,6 +22,18 @@
     "description": "Calculate your Body Mass Index (BMI) to determine if your weight is in a healthy range.",
     "category": "health",
     "fileName": "bmi-calculator.html"
+  },
+  {
+    "name": "cross-stitch-calculator",
+    "description": "Calculates finished project dimensions based on stitch counts and fabric specifications.",
+    "category": "converter",
+    "fileName": "cross-stitch-calculator.html"
+  },
+  {
+    "name": "cross-stitch-fabric-calculator",
+    "description": "Calculates required fabric dimensions and thread coverage for cross stitch projects based on stitch count and fabric specifications.",
+    "category": "craft",
+    "fileName": "cross-stitch-fabric-calculator.html"
   },
   {
     "name": "Currency Converter",
@@ -42,6 +60,12 @@
     "fileName": "mango-calculator.html"
   },
   {
+    "name": "percent-yield-calculator",
+    "description": "Calculates actual, theoretical, or percent yield for chemical reactions based on user-selected parameters.",
+    "category": "chemistry",
+    "fileName": "percent-yield-calculator.html"
+  },
+  {
     "name": "Percentage Calculator",
     "description": "Calculate percentages, percentage increase/decrease, and find what percentage one number is of another.",
     "category": "math",
@@ -52,6 +76,12 @@
     "description": "Calculates the severance pay amount based on employment duration, salary, and other factors.",
     "category": "finance",
     "fileName": "severance-pay-calculator.html"
+  },
+  {
+    "name": "theoretical-yield-calculator",
+    "description": "Calculates theoretical chemical yield based on reagent parameters and stoichiometry.",
+    "category": "science",
+    "fileName": "theoretical-yield-calculator.html"
   },
   {
     "name": "Tip Calculator",
