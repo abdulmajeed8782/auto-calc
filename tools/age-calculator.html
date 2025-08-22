@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="age-calculator">
+    <meta name="calculator-description" content="Calculates a person's age based on their date of birth and a target date.">
+    <meta name="calculator-category" content="health">
+    <title>Age Calculator</title>
+    <style>
+        :root {
+            --header-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-color: #4a5568;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: var(--header-gradient);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .calculate-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e2e8f0;
+            color: var(--primary-color);
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #results {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 5px;
+            display: none;
+        }
+
+        #error {
+            color: #e53e3e;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .about-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            line-height: 1.6;
+            color: var(--primary-color);
+        }
+
+        .about-content h2 {
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav {
+                margin-top: 1rem;
+            }
+
+            nav a {
+                margin: 0 0.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <form id="ageCalculator">
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" required>
+                </div>
+                <div class="form-group">
+                    <label for="targetDate">Age at the Date of</label>
+                    <input type="date" id="targetDate" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="calculate-btn">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+                <div id="results"></div>
+                <div id="error"></div>
+            </form>
+        </div>
+
+        <section class="about-content">
+            <h2>About the Age Calculator</h2>
+            <p>This Age Calculator helps you determine a person's exact age in years, months, and days. Simply enter the date of birth and the target date to calculate the precise duration between these two dates. This tool is particularly useful for:</p>
+            <ul>
+                <li>Calculating age for medical purposes</li>
+                <li>Verifying age-related eligibility</li>
+                <li>Tracking developmental milestones</li>
+                <li>Historical age comparisons</li>
+            </ul>
+            <p>The calculator accounts for leap years and varying month lengths to ensure accurate results. For best results, always use the calendar picker to select dates and ensure the target date is after the birth date.</p>
+        </section>
+    </main>
+
+    <script>
+        function calculateAge() {
+            const dob = new Date(document.getElementById('dob').value);
+            const targetDate = new Date(document.getElementById('targetDate').value);
+            const errorDiv = document.getElementById('error');
+            const resultsDiv = document.getElementById('results');
+
+            errorDiv.style.display = 'none';
+            resultsDiv.style.display = 'none';
+
+            if (!dob || !targetDate) {
+                showError('Please fill in both dates');
+                return;
+            }
+
+            if (targetDate < dob) {
+                showError('Target date must be after birth date');
+                return;
+            }
+
+            let years = targetDate.getFullYear() - dob.getFullYear();
+            let months = targetDate.getMonth() - dob.getMonth();
+            let days = targetDate.getDate() - dob.getDate();
+
+            if (days < 0) {
+                months--;
+                const lastMonth = new Date(targetDate.getFullYear(), targetDate.getMonth(), 0);
+                days += lastMonth.getDate();
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            resultsDiv.innerHTML = `Age: ${years} years, ${months} months, ${days} days`;
+            resultsDiv.style.display = 'block';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('ageCalculator').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+        }
+
+        document.getElementById('ageCalculator').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateAge();
+        });
+    </script>
+</body>
+</html>
