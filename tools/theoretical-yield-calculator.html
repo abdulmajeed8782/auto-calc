@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="theoretical-yield-calculator">
+    <meta name="calculator-description" content="Calculates theoretical chemical yield based on reagent parameters and stoichiometry.">
+    <meta name="calculator-category" content="science">
+    <title>Theoretical Yield Calculator</title>
+    <style>
+        :root {
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --white: #ffffff;
+            --gray: #f8f9fa;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        .calculator-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: 2px solid #764ba2;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .calculate-btn {
+            background: #4a5568;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        #results {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .error {
+            color: #e53e3e;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav {
+                margin-top: 1rem;
+            }
+
+            nav a {
+                margin: 0 1rem;
+            }
+
+            .calculator-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="calculator-container">
+        <h1>Theoretical Yield Calculator</h1>
+        <div class="error" id="errorMsg"></div>
+        <form id="calculatorForm">
+            <div class="input-group">
+                <label>Mass of Reagent (g)</label>
+                <input type="number" step="0.001" required>
+            </div>
+            <div class="input-group">
+                <label>Molecular Weight (Limiting Reagent) (g/mol)</label>
+                <input type="number" step="0.001" required>
+            </div>
+            <div class="input-group">
+                <label>Stoichiometry</label>
+                <input type="number" step="0.001" required>
+            </div>
+            <div class="input-group">
+                <label>No. of Mole(s) (Desired Product)</label>
+                <input type="number" step="0.001" required>
+            </div>
+            <div class="input-group">
+                <label>Molecular Weight (Desired Product) (g/mol)</label>
+                <input type="number" step="0.001" required>
+            </div>
+            <div class="button-group">
+                <button type="submit" class="calculate-btn">Calculate</button>
+                <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+            </div>
+        </form>
+
+        <div id="results">
+            <h3>Results</h3>
+            <table>
+                <tr>
+                    <th>Theoretical Yield</th>
+                    <td id="yieldResult">0.00 g</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <section class="about-content">
+        <h2>About the Theoretical Yield Calculator</h2>
+        <p>This calculator helps determine the maximum amount of product (theoretical yield) that can be produced in a chemical reaction based on the stoichiometric relationships between reactants and products. It's essential for chemists and students to predict reaction outcomes and optimize experimental conditions.</p>
+        
+        <h3>How to Use</h3>
+        <ol>
+            <li>Enter the mass of your limiting reagent in grams</li>
+            <li>Input the molecular weight of the limiting reagent</li>
+            <li>Provide the stoichiometric ratio from the balanced equation</li>
+            <li>Enter the number of moles for the desired product</li>
+            <li>Input the molecular weight of the desired product</li>
+        </ol>
+
+        <h3>Why It's Useful</h3>
+        <p>Theoretical yield calculations help in:
+            <ul>
+                <li>Predicting reaction efficiency</li>
+                <li>Determining limiting reagents</li>
+                <li>Planning laboratory experiments</li>
+                <li>Calculating percent yield after experiments</li>
+            </ul>
+        </p>
+    </section>
+
+    <script>
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const inputs = Array.from(this.elements).filter(el => el.tagName === 'INPUT');
+            const values = inputs.map(input => parseFloat(input.value));
+            
+            if (values.some(val => isNaN(val) || val <= 0)) {
+                showError('Please enter valid positive numbers in all fields');
+                return;
+            }
+
+            const [mass, mwLimiting, stoichiometry, molesProduct, mwProduct] = values;
+            const theoreticalYield = (mass / mwLimiting) * stoichiometry * mwProduct;
+            
+            document.getElementById('yieldResult').textContent = `${theoreticalYield.toFixed(2)} g`;
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('errorMsg').style.display = 'none';
+        });
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorEl = document.getElementById('errorMsg');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
