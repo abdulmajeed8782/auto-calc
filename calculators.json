@@ -18,12 +18,6 @@
     "fileName": "bmi-calculator.html"
   },
   {
-    "name": "cross-stitch-calculator",
-    "description": "Calculates finished project dimensions based on stitch counts and fabric specifications.",
-    "category": "converter",
-    "fileName": "cross-stitch-calculator.html"
-  },
-  {
     "name": "cross-stitch-fabric-calculator",
     "description": "Calculates required fabric dimensions and thread coverage for cross stitch projects based on stitch count and fabric specifications.",
     "category": "craft",
