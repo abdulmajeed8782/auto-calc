@@ -54,12 +54,6 @@
     "fileName": "severance-pay-calculator.html"
   },
   {
-    "name": "theoretical-yield-calculator",
-    "description": "Calculates theoretical chemical yield based on reagent parameters and stoichiometry.",
-    "category": "science",
-    "fileName": "theoretical-yield-calculator.html"
-  },
-  {
     "name": "Tip Calculator",
     "description": "Calculate tips and split bills among multiple people for restaurants and services.",
     "category": "finance",
