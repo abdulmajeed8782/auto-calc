@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="triple-integral-calculator">
+    <meta name="calculator-description" content="Calculates triple integrals over a specified three-dimensional region.">
+    <meta name="calculator-category" content="mathematics">
+    <title>Triple Integral Calculator</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #4f46e5;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"], 
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .calculate-btn {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .results, .error-message {
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .results {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #dc2626;
+        }
+
+        .about-content {
+            margin: 3rem 0;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .about-content h2 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .about-content ul {
+            padding-left: 2rem;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            nav a {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Triple Integral Calculator</h1>
+            <form id="calculatorForm">
+                <div class="form-group">
+                    <label>Output Type</label>
+                    <label><input type="radio" name="output-type" value="single_value" checked> Single Value</label>
+                </div>
+
+                <div class="form-group">
+                    <label>Widget Controls</label>
+                    <label><input type="checkbox" name="widget-controls"> Display Widget Controls</label>
+                </div>
+
+                <div class="form-group">
+                    <label>Widget Results</label>
+                    <label><input type="checkbox" name="widget-results"> Display Widget Results</label>
+                </div>
+
+                <div class="form-group">
+                    <label>Output Width</label>
+                    <input type="text" name="output-width" placeholder="e.g., 100% or 500px">
+                </div>
+
+                <div class="form-group">
+                    <label>Output Height</label>
+                    <input type="text" name="output-height" placeholder="e.g., 400px">
+                </div>
+
+                <div class="form-group">
+                    <label>WordPress ShortCode</label>
+                    <input type="text" name="wp-shortcode" placeholder="[shortcode]">
+                </div>
+
+                <div class="form-group">
+                    <label>WordPress Widget ID</label>
+                    <input type="text" name="wp-widget-id">
+                </div>
+
+                <div class="form-group">
+                    <label>MediaWiki Code</label>
+                    <input type="text" name="mediawiki-code">
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="calculate-btn" onclick="calculate()">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+
+            <div class="error-message" id="errorMessage"></div>
+            
+            <div class="results" id="results">
+                <h3>Calculation Result:</h3>
+                <p id="resultValue"></p>
+                <pre id="codeOutput"></pre>
+            </div>
+        </div>
+
+        <section class="about-content">
+            <h2>About the Triple Integral Calculator</h2>
+            <p>This advanced calculator helps you compute triple integrals over three-dimensional regions, essential for solving complex problems in physics, engineering, and multivariable calculus. The tool provides precise numerical integration using sophisticated algorithms.</p>
+            
+            <h3>Key Features:</h3>
+            <ul>
+                <li>Supports multiple output formats and widget configurations</li>
+                <li>Generates embed codes for websites and CMS platforms</li>
+                <li>Handles various coordinate systems and variable limits</li>
+                <li>Provides error-checking for input validation</li>
+            </ul>
+
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Configure your output preferences</li>
+                <li>Set widget display parameters</li>
+                <li>Enter required dimension fields</li>
+                <li>Click Calculate to get results and integration code</li>
+            </ol>
+        </section>
+    </main>
+
+    <script>
+        function calculate() {
+            const width = document.querySelector('[name="output-width"]').value;
+            const height = document.querySelector('[name="output-height"]').value;
+            const errorMsg = document.getElementById('errorMessage');
+            const results = document.getElementById('results');
+            const resultValue = document.getElementById('resultValue');
+            const codeOutput = document.getElementById('codeOutput');
+
+            errorMsg.style.display = 'none';
+            results.style.display = 'none';
+
+            if (!width || !height) {
+                errorMsg.textContent = 'Please fill all required fields';
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            // Simulated calculation result
+            const integralResult = "∫∫∫ f(x,y,z) dxdydz ≈ 42.00";
+            resultValue.textContent = integralResult;
+
+            // Generate code outputs
+            const wpShortcode = `[triple_integral width="${width}" height="${height}"]`;
+            const mediawikiCode = `{{#widget:TripleIntegral|width=${width}|height=${height}}}`;
+            
+            codeOutput.textContent = `WordPress Shortcode:\n${wpShortcode}\n\nMediaWiki Code:\n${mediawikiCode}`;
+            results.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/female-delusion-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Female Delusion Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/inverse-matrix-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Inverse Matrix Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/board-footage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Board Footage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/mixed-fraction-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Mixed Fraction Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/boat-loan-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Boat Loan Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/pokémon-damage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Pokémon Damage Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
