@@ -165,6 +165,12 @@
     "name": "grade-calculator",
     "description": "Calculates current course grades and helps plan final exam scores based on assignment details and weights.",
     "category": "education",
+    "fileName": "grade-calculator-final.html"
+  },
+  {
+    "name": "grade-calculator",
+    "description": "Calculates current course grades and helps plan final exam scores based on assignment details and weights.",
+    "category": "education",
     "fileName": "grade-calculator.html"
   },
   {
