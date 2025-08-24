@@ -24,6 +24,12 @@
     "fileName": "basic-calculator.html"
   },
   {
+    "name": "binomial-distribution-calculator",
+    "description": "Calculates binomial probabilities and related statistical measures based on user-provided parameters.",
+    "category": "statistics",
+    "fileName": "binomial-distribution-calculator.html"
+  },
+  {
     "name": "blox-fruit-trade-calculator",
     "description": "Calculates and compares trade values for Blox Fruits items based on in-game metrics.",
     "category": "gaming",
