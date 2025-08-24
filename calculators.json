@@ -37,8 +37,8 @@
   },
   {
     "name": "blox-fruits-trade-calculator",
-    "description": "Calculates and compares trade values for in-game items with demand metrics.",
-    "category": "gaming",
+    "description": "A calculator for comparing and evaluating trade offers in the Blox Fruits game.",
+    "category": "game",
     "fileName": "blox-fruits-trade-calculator.html"
   },
   {
