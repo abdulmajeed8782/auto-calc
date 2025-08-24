@@ -234,6 +234,12 @@
     "fileName": "square-root-calculator.html"
   },
   {
+    "name": "surface-area-calculator",
+    "description": "Calculates the surface area of geometric shapes with unit conversion and significant figures customization.",
+    "category": "math",
+    "fileName": "surface-area-calculator.html"
+  },
+  {
     "name": "theoretical-yield-calculator",
     "description": "Calculates theoretical chemical yield based on reagent parameters and stoichiometry.",
     "category": "science",
