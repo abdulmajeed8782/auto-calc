@@ -90,6 +90,12 @@
     "fileName": "currency-converter.html"
   },
   {
+    "name": "d&d-5e-point-buy-calculator",
+    "description": "Calculates ability scores for D&D 5e characters using a customizable point-buy system, including racial bonuses and custom rules.",
+    "category": "gaming",
+    "fileName": "d&d-5e-point-buy-calculator.html"
+  },
+  {
     "name": "double-integral-calculator",
     "description": "Computes double integrals over specified regions with step-by-step solutions.",
     "category": "math",
