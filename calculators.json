@@ -84,6 +84,12 @@
     "fileName": "chronological-age-calculator.html"
   },
   {
+    "name": "critical-value-calculator",
+    "description": "Calculates critical values for T, Z, Chi-Square, F, and R statistical distributions based on significance level and degrees of freedom.",
+    "category": "statistics",
+    "fileName": "critical-value-calculator.html"
+  },
+  {
     "name": "cross-stitch-calculator",
     "description": "Calculates finished project dimensions based on stitch counts and fabric specifications.",
     "category": "converter",
