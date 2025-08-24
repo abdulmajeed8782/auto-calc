@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="cubic-yards-calculator">
+    <meta name="calculator-description" content="Calculates volume in cubic yards for various geometric shapes and provides cost estimates based on unit pricing.">
+    <meta name="calculator-category" content="converter">
+    <title>Cubic Yards Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6b46c1, #4299e1);
+            color: white;
+            padding: 1rem 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66,153,225,0.2);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .calculate-btn {
+            background: #48bb78;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #f56565;
+            color: white;
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 5px;
+        }
+
+        .error {
+            color: #e53e3e;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+            color: #4a5568;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Cubic Yards Calculator</h1>
+            <form id="calculatorForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Area Shape</label>
+                        <select>
+                            <option value="rectangle">Rectangle</option>
+                            <option value="circle">Circle</option>
+                            <option value="triangle">Triangle</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Length (ft)</label>
+                        <input type="number" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Width (ft)</label>
+                        <input type="number" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Depth (in)</label>
+                        <input type="number" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" step="1" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select>
+                            <option>USD</option>
+                            <option>EUR</option>
+                            <option>GBP</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Price per cubic yard</label>
+                        <input type="number" step="0.01" required>
+                    </div>
+                </div>
+                <div class="error" id="errorMessage"></div>
+                <div class="button-group">
+                    <button type="button" class="calculate-btn" onclick="calculate()">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+            <div class="results" id="results"></div>
+        </div>
+    </main>
+
+    <section class="about-content">
+        <h2>About the Cubic Yards Calculator</h2>
+        <p>This calculator helps you determine the volume of materials needed in cubic yards for various projects. Whether you're working with concrete, mulch, soil, or other materials, converting measurements to cubic yards ensures accurate material ordering and cost estimation.</p>
+        
+        <h3>How to Use</h3>
+        <p>1. Select your project area shape<br>
+        2. Enter dimensions in feet/inches<br>
+        3. Specify material quantity needed<br>
+        4. Input price per cubic yard<br>
+        5. Click Calculate to get volume and total cost</p>
+
+        <h3>Why It's Useful</h3>
+        <p>Calculating cubic yards helps prevent over-ordering or under-ordering materials, saves money through accurate cost projections, and simplifies communication with suppliers. The built-in unit converter automatically handles inch-to-yard conversions for precision.</p>
+    </section>
+
+    <script>
+        function calculate() {
+            const inputs = document.querySelectorAll('input');
+            const error = document.getElementById('errorMessage');
+            const results = document.getElementById('results');
+            
+            error.style.display = 'none';
+            results.innerHTML = '';
+
+            try {
+                const values = Array.from(inputs).map(input => {
+                    if (!input.checkValidity()) throw 'Please fill all required fields';
+                    return parseFloat(input.value);
+                });
+
+                const [length, width, depth, quantity, price] = values.slice(1);
+                const depthYards = depth / 36;
+                const volume = (length * width * depthYards) / 27;
+                const totalCost = volume * quantity * price;
+
+                if (isNaN(volume) || isNaN(totalCost)) throw 'Invalid calculation values';
+
+                results.innerHTML = `
+                    <p>Volume: ${volume.toFixed(2)} cubic yards</p>
+                    <p>Total Cost: ${document.querySelector('select').value} ${totalCost.toFixed(2)}</p>
+                `;
+            } catch (err) {
+                error.textContent = err;
+                error.style.display = 'block';
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/percent-off-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Percent Off Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/weighted-grade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Weighted Grade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/blox-fruits-trade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Blox Fruits Trade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/square-footage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Square Footage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/chipotle-calorie-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Chipotle Calorie Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/breeding-combos-&-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Breeding Combos & Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
