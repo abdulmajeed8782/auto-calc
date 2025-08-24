@@ -42,6 +42,12 @@
     "fileName": "breeding-combos-&-calculator.html"
   },
   {
+    "name": "chipotle-calorie-calculator",
+    "description": "Calculates nutritional information for custom Chipotle orders based on selected menu items and quantities.",
+    "category": "health",
+    "fileName": "chipotle-calorie-calculator.html"
+  },
+  {
     "name": "chipotle-nutrition-calculator",
     "description": "Calculates nutritional information for Chipotle menu items based on user selections.",
     "category": "health",
