@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="wolframalpha-implicit-differentiation-calculator">
+    <meta name="calculator-description" content="Calculates derivatives of implicitly defined equations using implicit differentiation.">
+    <meta name="calculator-category" content="education">
+    <title>WolframAlpha Implicit Differentiation Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            color: white;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .calculator-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .calculator-title {
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        .calculate-btn {
+            background: #48bb78;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #f56565;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .result-section {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error-message {
+            color: #f56565;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .about-content h2 {
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="calculator-container">
+        <div class="calculator-card">
+            <h1 class="calculator-title">Implicit Differentiation Calculator</h1>
+            <form onsubmit="event.preventDefault(); calculate()">
+                <div class="form-group">
+                    <label for="implicit-differentiation">Enter Equation (F(x,y) = 0)</label>
+                    <input type="text" id="implicit-differentiation" placeholder="e.g., x^2 + y^2 = 25">
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="calculate-btn">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+            <div class="result-section" id="result-section">
+                <strong>Result:</strong>
+                <div id="result"></div>
+            </div>
+            <div class="error-message" id="error-message"></div>
+        </div>
+    </main>
+
+    <section class="about-content">
+        <h2>About Implicit Differentiation Calculator</h2>
+        <p>This calculator helps find derivatives of implicitly defined equations using the implicit differentiation method. Unlike explicit functions where y is directly expressed in terms of x, implicit functions require special techniques to differentiate.</p>
+        
+        <h3>How to Use</h3>
+        <p>1. Enter your equation in the form F(x,y) = 0 (e.g., x² + y² = 25)<br>
+        2. Click Calculate to see the derivative dy/dx<br>
+        3. Use Clear to reset inputs and results</p>
+
+        <h3>Why It's Useful</h3>
+        <p>Implicit differentiation is essential for solving derivatives of complex relationships that can't be easily solved for y. It's widely used in physics, engineering, and economics for analyzing interconnected variables.</p>
+    </section>
+
+    <script>
+        function calculate() {
+            const equationInput = document.getElementById('implicit-differentiation').value.trim();
+            const resultSection = document.getElementById('result-section');
+            const errorMessage = document.getElementById('error-message');
+            
+            errorMessage.style.display = 'none';
+            resultSection.style.display = 'none';
+
+            if (!equationInput) {
+                showError('Please enter an equation');
+                return;
+            }
+
+            if (!equationInput.includes('=')) {
+                showError('Equation must contain an equals sign (=)');
+                return;
+            }
+
+            try {
+                const [left, right] = equationInput.split('=').map(s => s.trim());
+                const F = parseEquation(left, right);
+                const F_x = computePartialDerivative(F, 'x');
+                const F_y = computePartialDerivative(F, 'y');
+                
+                document.getElementById('result').innerHTML = `
+                    dy/dx = -(${F_x})/(${F_y})
+                `;
+                resultSection.style.display = 'block';
+            } catch (e) {
+                showError('Error processing equation. Please check your input format');
+            }
+        }
+
+        function parseEquation(left, right) {
+            return {
+                left: parseTerms(left),
+                right: parseTerms(right)
+            };
+        }
+
+        function parseTerms(expression) {
+            const terms = [];
+            let currentTerm = '';
+            let sign = 1;
+
+            for (let char of expression.replace(/\s+/g, '')) {
+                if (char === '+' || char === '-') {
+                    if (currentTerm) terms.push(processTerm(currentTerm, sign));
+                    sign = char === '+' ? 1 : -1;
+                    currentTerm = '';
+                } else {
+                    currentTerm += char;
+                }
+            }
+            if (currentTerm) terms.push(processTerm(currentTerm, sign));
+            return terms;
+        }
+
+        function processTerm(term, sign) {
+            const parts = term.split('^');
+            const base = parts[0];
+            const exponent = parts[1] ? parseInt(parts[1]) : 1;
+            return { base, exponent, sign };
+        }
+
+        function computePartialDerivative(F, variable) {
+            let derivative = 0;
+            [...F.left, ...F.right.map(t => ({ ...t, sign: -t.sign }))].forEach(term => {
+                if (term.base === variable) {
+                    derivative += term.sign * term.exponent;
+                }
+            });
+            return derivative === 0 ? '0' : `${derivative}${variable}${derivative !== 1 ? `^${derivative - 1}` : ''}`;
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('implicit-differentiation').value = '';
+            document.getElementById('result-section').style.display = 'none';
+            document.getElementById('error-message').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/binomial-distribution-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Binomial Distribution Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/pokémon-type-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Pokémon Type Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/dot-product-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Dot Product Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/grade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Grade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/surface-area-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Surface Area Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/critical-value-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Critical Value Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
