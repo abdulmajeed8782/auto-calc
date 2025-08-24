@@ -30,6 +30,12 @@
     "fileName": "bmi-calculator.html"
   },
   {
+    "name": "chipotle-nutrition-calculator",
+    "description": "Calculates nutritional information for Chipotle menu items based on user selections.",
+    "category": "health",
+    "fileName": "chipotle-nutrition-calculator.html"
+  },
+  {
     "name": "cross-stitch-calculator",
     "description": "Calculates finished project dimensions based on stitch counts and fabric specifications.",
     "category": "converter",
