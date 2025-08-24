@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="bra-size-calculator">
+    <meta name="calculator-description" content="Calculates bra size based on bust and band measurements and converts between international size standards.">
+    <meta name="calculator-category" content="clothing">
+    <title>Bra Size Calculator</title>
+    <style>
+        :root {
+            --header-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: var(--header-gradient);
+            padding: 1rem 0;
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .calculate-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e53e3e;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .results {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .about-content {
+            margin-top: 3rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .about-content h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .header-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Bra Size Calculator</h1>
+            <form id="braCalculator">
+                <div class="form-group">
+                    <label for="bust">Bust Size (inches)</label>
+                    <input type="number" id="bust" required>
+                </div>
+                <div class="form-group">
+                    <label for="band">Band Size (inches)</label>
+                    <input type="number" id="band" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Target Location</label>
+                    <select id="location">
+                        <option value="US">United States</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="EU">European Union</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="calculate-btn" onclick="calculateSize()">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+            <div class="error-message" id="errorMessage"></div>
+            <div class="results" id="results">
+                <h3>Your Bra Size</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Size</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <section class="about-content">
+            <h2>About This Calculator</h2>
+            <p>This bra size calculator helps you determine your correct bra size based on precise body measurements and converts between international sizing standards. Proper bra sizing is essential for comfort, support, and breast health.</p>
+            
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Measure your underbust (band size) in inches</li>
+                <li>Measure your bust at the fullest point</li>
+                <li>Enter measurements into the calculator</li>
+                <li>Select your target location for size conversion</li>
+            </ol>
+
+            <h3>Why It Matters:</h3>
+            <p>Wearing the correct bra size can prevent back pain, improve posture, and ensure proper support. International size conversions help when shopping for lingerie from global brands.</p>
+        </section>
+    </main>
+
+    <script>
+        function calculateSize() {
+            const bust = parseFloat(document.getElementById('bust').value);
+            const band = parseFloat(document.getElementById('band').value);
+            const errorMessage = document.getElementById('errorMessage');
+            const results = document.getElementById('results');
+            const resultsBody = document.getElementById('resultsBody');
+
+            errorMessage.style.display = 'none';
+            results.style.display = 'none';
+
+            if (isNaN(bust) || isNaN(band)) {
+                showError('Please enter valid measurements');
+                return;
+            }
+
+            if (bust <= band) {
+                showError('Bust measurement must be larger than band size');
+                return;
+            }
+
+            const bandSize = Math.round(band / 2) * 2;
+            const cupSize = bust - band;
+            const cupLetter = String.fromCharCode(65 + Math.round(cupSize) - 1);
+            const baseSize = `${bandSize}${cupLetter}`;
+
+            const conversions = {
+                'US': baseSize,
+                'UK': cupLetter >= 'D' ? `${bandSize}${cupLetter} (UK)` : baseSize,
+                'EU': `${bandSize + 10}${cupLetter}`
+            };
+
+            resultsBody.innerHTML = Object.entries(conversions).map(([location, size]) => `
+                <tr>
+                    <td>${location}</td>
+                    <td>${size}</td>
+                </tr>
+            `).join('');
+
+            results.style.display = 'block';
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('braCalculator').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/square-root-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Square Root Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/quadratic-formula-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Quadratic Formula Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/chipotle-nutrition-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Chipotle Nutrition Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/snow-day-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Snow Day Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/final-grade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Final Grade Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
