@@ -114,6 +114,12 @@
     "fileName": "mango-calculator.html"
   },
   {
+    "name": "percent-off-calculator",
+    "description": "Calculates the discounted price and savings based on a percentage off.",
+    "category": "finance",
+    "fileName": "percent-off-calculator.html"
+  },
+  {
     "name": "percent-yield-calculator",
     "description": "Calculates actual, theoretical, or percent yield for chemical reactions based on user-selected parameters.",
     "category": "chemistry",
