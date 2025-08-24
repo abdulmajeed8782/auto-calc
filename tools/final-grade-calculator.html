@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="final-grade-calculator">
+    <meta name="calculator-description" content="Calculates the required final exam score needed to achieve a desired course grade based on current grades and weights.">
+    <meta name="calculator-category" content="education">
+    <title>Final Grade Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            color: white;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .calculate-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e53e3e;
+            color: white;
+        }
+
+        .results {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error {
+            color: #e53e3e;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .about-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .about-content h2 {
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .about-content p {
+            line-height: 1.6;
+            color: #4a5568;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Final Grade Calculator</h1>
+            <form id="calculatorForm">
+                <div class="form-group">
+                    <label>Grade Format:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="grade_format" value="points" checked> Points/Percentage</label>
+                        <label><input type="radio" name="grade_format" value="letters"> Letters</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Your current grade (%):</label>
+                    <input type="number" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label>The grade you want (%):</label>
+                    <input type="number" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Your final is worth (%):</label>
+                    <input type="number" step="0.01" required>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="calculate-btn" onclick="calculateGrade()">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+
+            <div class="results" id="results">
+                <strong>Required Final Exam Score:</strong> <span id="resultValue">0</span>%
+            </div>
+
+            <div class="error" id="errorMessage">
+                Please fill all fields with valid numbers
+            </div>
+        </div>
+
+        <section class="about-content">
+            <h2>About the Final Grade Calculator</h2>
+            <p>This calculator helps students determine the minimum score needed on their final exam to achieve a desired overall course grade. By inputting your current grade percentage, your target course grade, and the weight of the final exam in your course, the calculator applies a mathematical formula to determine the required performance on your final assessment.</p>
+            
+            <p>To use the calculator effectively:
+                <ol>
+                    <li>Select your current grade format (percentage or letter grade)</li>
+                    <li>Enter your current course percentage</li>
+                    <li>Input your desired overall course percentage</li>
+                    <li>Specify what percentage of your total grade the final exam represents</li>
+                </ol>
+            </p>
+
+            <p>The calculator is particularly useful for:
+                <ul>
+                    <li>Planning study time effectively</li>
+                    <li>Setting realistic academic goals</li>
+                    <li>Understanding grade weight impacts</li>
+                    <li>Making informed decisions about academic priorities</li>
+                </ul>
+            </p>
+        </section>
+    </main>
+
+    <script>
+        function calculateGrade() {
+            const currentGrade = parseFloat(document.querySelector('input[type="number"]:nth-of-type(1)').value);
+            const desiredGrade = parseFloat(document.querySelector('input[type="number"]:nth-of-type(2)').value);
+            const finalWeight = parseFloat(document.querySelector('input[type="number"]:nth-of-type(3)').value)/100;
+            const results = document.getElementById('results');
+            const error = document.getElementById('errorMessage');
+
+            if (isNaN(currentGrade) || isNaN(desiredGrade) || isNaN(finalWeight) || finalWeight === 0) {
+                error.style.display = 'block';
+                results.style.display = 'none';
+                return;
+            }
+
+            error.style.display = 'none';
+            
+            const requiredFinal = (desiredGrade - (currentGrade * (1 - finalWeight))) / finalWeight;
+            const resultValue = document.getElementById('resultValue');
+            
+            if (requiredFinal > 100) {
+                resultValue.textContent = 'Not possible (needs >100%)';
+            } else if (requiredFinal < 0) {
+                resultValue.textContent = '0% (already achieved)';
+            } else {
+                resultValue.textContent = requiredFinal.toFixed(2);
+            }
+
+            results.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/tax-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Tax Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/age-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Age Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/bmi-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Bmi Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/mortgage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Mortgage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/percentage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Percentage Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
