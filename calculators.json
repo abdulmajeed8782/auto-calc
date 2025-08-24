@@ -166,5 +166,11 @@
     "description": "Calculate tips and split bills among multiple people for restaurants and services.",
     "category": "finance",
     "fileName": "tip-calculator.html"
+  },
+  {
+    "name": "weighted-grade-calculator",
+    "description": "Calculates weighted grades, allows final grade planning, and supports multiple grade/weight formats.",
+    "category": "education",
+    "fileName": "weighted-grade-calculator.html"
   }
 ]
