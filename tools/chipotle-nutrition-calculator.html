@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="chipotle-nutrition-calculator">
+    <meta name="calculator-description" content="Calculates nutritional information for Chipotle menu items based on user selections.">
+    <meta name="calculator-category" content="health">
+    <title>Chipotle Nutrition Calculator</title>
+    <style>
+        :root {
+            --header-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-color: #4a5568;
+            --accent-color: #667eea;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: var(--header-gradient);
+            padding: 1rem 0;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .calculate-btn {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e2e8f0;
+            color: var(--primary-color);
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .about-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            line-height: 1.6;
+            color: var(--primary-color);
+        }
+
+        .about-content h2 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav {
+                margin-top: 1rem;
+            }
+
+            nav a {
+                margin: 0 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Chipotle Nutrition Calculator</h1>
+            <form id="nutritionForm">
+                <div class="form-group">
+                    <label for="base">Base Item</label>
+                    <select id="base" required>
+                        <option value="">Select Base</option>
+                        <option value="burrito">Burrito</option>
+                        <option value="bowl">Bowl</option>
+                        <option value="tacos">Tacos</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="protein">Protein</label>
+                    <select id="protein" required>
+                        <option value="">Select Protein</option>
+                        <option value="chicken">Chicken</option>
+                        <option value="steak">Steak</option>
+                        <option value="sofritas">Sofritas</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="toppings">Toppings</label>
+                    <select id="toppings" multiple>
+                        <option value="cheese">Cheese</option>
+                        <option value="guacamole">Guacamole</option>
+                        <option value="salsa">Salsa</option>
+                    </select>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="calculate-btn" onclick="calculateNutrition()">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+
+            <div class="results" id="results">
+                <h3>Estimated Nutrition:</h3>
+                <p>Total Calories: <span id="calories">0</span></p>
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                Please fill in all required fields!
+            </div>
+        </div>
+
+        <section class="about-content">
+            <h2>About This Calculator</h2>
+            <p>The Chipotle Nutrition Calculator helps you make informed dietary choices by estimating the nutritional content of your Chipotle meal. Simply select your base item, protein choice, and toppings to receive instant calorie calculations.</p>
+            <p>How to use:</p>
+            <ol>
+                <li>Select your base item (burrito, bowl, or tacos)</li>
+                <li>Choose your preferred protein</li>
+                <li>Add any additional toppings</li>
+                <li>Click "Calculate" to see nutritional information</li>
+            </ol>
+            <p>This tool is particularly useful for health-conscious individuals tracking their daily calorie intake or managing specific dietary needs. While estimates are based on standard Chipotle nutritional information, actual values may vary depending on portion sizes.</p>
+        </section>
+    </main>
+
+    <script>
+        const nutritionValues = {
+            base: { burrito: 300, bowl: 400, tacos: 250 },
+            protein: { chicken: 180, steak: 200, sofritas: 150 },
+            toppings: { cheese: 100, guacamole: 230, salsa: 20 }
+        };
+
+        function calculateNutrition() {
+            const base = document.getElementById('base').value;
+            const protein = document.getElementById('protein').value;
+            const toppings = Array.from(document.getElementById('toppings').selectedOptions).map(opt => opt.value);
+
+            if (!base || !protein) {
+                showError();
+                return;
+            }
+
+            let total = nutritionValues.base[base] + nutritionValues.protein[protein];
+            toppings.forEach(t => total += nutritionValues.toppings[t]);
+
+            document.getElementById('calories').textContent = total;
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function clearForm() {
+            document.getElementById('nutritionForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function showError() {
+            document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/snow-day-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Snow Day Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/final-grade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Final Grade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/savings-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Savings Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/percentage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Percentage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/bmi-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Bmi Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
