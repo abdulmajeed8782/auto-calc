@@ -186,6 +186,12 @@
     "fileName": "mixed-fraction-calculator.html"
   },
   {
+    "name": "palworld-breeding-calculator",
+    "description": "Calculates optimal breeding combinations and outcomes for creatures in Palworld.",
+    "category": "gaming",
+    "fileName": "palworld-breeding-calculator.html"
+  },
+  {
     "name": "partial-derivative-calculator",
     "description": "Computes derivatives and partial derivatives of mathematical functions with configurable options and step-by-step solutions.",
     "category": "mathematics",
