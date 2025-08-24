@@ -54,6 +54,12 @@
     "fileName": "bmi-calculator.html"
   },
   {
+    "name": "board-foot-calculator",
+    "description": "Calculates the board feet of lumber based on dimensions and quantity.",
+    "category": "converter",
+    "fileName": "board-foot-calculator.html"
+  },
+  {
     "name": "board-footage-calculator",
     "description": "Calculates the board footage of lumber based on dimensions and quantity.",
     "category": "converter",
