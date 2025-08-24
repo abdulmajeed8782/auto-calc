@@ -78,6 +78,12 @@
     "fileName": "cross-stitch-fabric-calculator.html"
   },
   {
+    "name": "cubic-yards-calculator",
+    "description": "Calculates volume in cubic yards for various geometric shapes and provides cost estimates based on unit pricing.",
+    "category": "converter",
+    "fileName": "cubic-yards-calculator.html"
+  },
+  {
     "name": "Currency Converter",
     "description": "Convert between different currencies with real-time exchange rates.",
     "category": "finance",
