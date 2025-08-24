@@ -138,8 +138,8 @@
     "fileName": "final-grade-calculator.html"
   },
   {
-    "name": "Grade Calculator",
-    "description": "Calculate your GPA and final grades based on your assignment and test scores.",
+    "name": "grade-calculator",
+    "description": "Calculates current course grades and helps plan final exam scores based on assignment details and weights.",
     "category": "education",
     "fileName": "grade-calculator.html"
   },
