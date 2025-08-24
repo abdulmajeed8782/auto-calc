@@ -228,6 +228,12 @@
     "fileName": "percentage-calculator.html"
   },
   {
+    "name": "pokemon-damage-calculator",
+    "description": "Calculates the damage dealt by a Pokemon's move during battle based on stats, types, and modifiers.",
+    "category": "gaming",
+    "fileName": "pokemon-damage-calculator.html"
+  },
+  {
     "name": "pokémon-damage-calculator",
     "description": "Calculates damage dealt by Pokémon moves in battles across different game generations.",
     "category": "gaming",
