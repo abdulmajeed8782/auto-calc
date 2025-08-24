@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="female-delusion-calculator">
+    <meta name="calculator-description" content="Assesses the likelihood of finding a partner based on user-defined criteria and statistical data.">
+    <meta name="calculator-category" content="relationship">
+    <title>Female Delusion Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            color: white;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .calculator-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .calculator-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        input {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: 2px solid #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .calculate-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .results {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .calculator-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-container">
+            <h1>Female Delusion Calculator</h1>
+            <form class="calculator-form" id="calculatorForm">
+                <div class="form-group">
+                    <label>Number of Eligible Partners</label>
+                    <input type="number" id="eligible" required>
+                </div>
+                <div class="form-group">
+                    <label>Total Population</label>
+                    <input type="number" id="population" required>
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="calculate-btn">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+            <div class="results" id="results">
+                <h3>Probability: <span id="probability">0</span>%</h3>
+            </div>
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+
+        <section class="about-content">
+            <h2>About the Female Delusion Calculator</h2>
+            <p>This calculator helps estimate the probability of finding a compatible partner based on statistical data and your personal criteria. By comparing the number of potential partners meeting your requirements against the total population, it provides insight into realistic dating expectations.</p>
+            <h3>How to Use</h3>
+            <p>1. Enter the number of individuals who meet your criteria in your demographic area<br>
+            2. Input the total population size of your search area<br>
+            3. Click Calculate to see your probability percentage</p>
+            <h3>Why It's Useful</h3>
+            <p>This tool helps users make data-driven decisions about their dating preferences by quantifying the reality of partner availability. It encourages realistic expectations while accounting for statistical probabilities in the dating pool.</p>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const eligible = parseFloat(document.getElementById('eligible').value);
+            const population = parseFloat(document.getElementById('population').value);
+            const errorElement = document.getElementById('errorMessage');
+            const resultsElement = document.getElementById('results');
+
+            errorElement.style.display = 'none';
+            resultsElement.style.display = 'none';
+
+            if (isNaN(eligible) || isNaN(population)) {
+                showError('Please enter valid numbers in both fields');
+                return;
+            }
+
+            if (population <= 0) {
+                showError('Population must be greater than zero');
+                return;
+            }
+
+            if (eligible > population) {
+                showError('Eligible partners cannot exceed total population');
+                return;
+            }
+
+            const probability = (eligible / population) * 100;
+            document.getElementById('probability').textContent = probability.toFixed(2);
+            resultsElement.style.display = 'block';
+        });
+
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/inverse-matrix-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Inverse Matrix Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/board-footage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Board Footage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/mixed-fraction-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Mixed Fraction Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/boat-loan-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Boat Loan Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/pokémon-damage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Pokémon Damage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/partial-derivative-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Partial Derivative Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
