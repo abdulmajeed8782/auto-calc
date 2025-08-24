@@ -138,6 +138,12 @@
     "fileName": "snow-day-calculator.html"
   },
   {
+    "name": "square-footage-calculator",
+    "description": "Calculates the area of various geometric shapes and provides cost estimates based on optional pricing.",
+    "category": "converter",
+    "fileName": "square-footage-calculator.html"
+  },
+  {
     "name": "square-root-calculator",
     "description": "Calculates the square root of a given number.",
     "category": "converter",
