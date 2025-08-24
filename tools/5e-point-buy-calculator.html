@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="5e-point-buy-calculator">
+    <meta name="calculator-description" content="Allocates Dungeons & Dragons 5th edition character ability scores using a point buy system with customizable rules and racial modifiers.">
+    <meta name="calculator-category" content="gaming">
+    <title>5e Point Buy Calculator</title>
+    <style>
+        :root {
+            --header-bg: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --card-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: var(--header-bg);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--card-shadow);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+        }
+
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .error-message {
+            color: #ef4444;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .about-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .about-content h2 {
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>5e Point Buy Calculator</h1>
+            <div class="error-message" id="errorMessage"></div>
+            <form id="calculatorForm" onsubmit="return false">
+                <div class="grid-container">
+                    <div class="form-group">
+                        <label>Available Points</label>
+                        <input type="number" id="availablePoints" value="27" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Max Attribute</label>
+                        <input type="number" id="maxAttribute" value="15" min="8" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Min Attribute</label>
+                        <input type="number" id="minAttribute" value="8" min="3" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Point Cost Adjustment</label>
+                        <input type="number" id="pointCost" value="1" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Race</label>
+                        <select id="raceSelect">
+                            <option value="human">Human</option>
+                            <option value="elf">Elf</option>
+                            <option value="dwarf">Dwarf</option>
+                            <option value="halfling">Halfling</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid-container">
+                    <div class="form-group">
+                        <label>Strength</label>
+                        <input type="number" id="strength" min="8" max="15" value="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Dexterity</label>
+                        <input type="number" id="dexterity" min="8" max="15" value="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Constitution</label>
+                        <input type="number" id="constitution" min="8" max="15" value="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Intelligence</label>
+                        <input type="number" id="intelligence" min="8" max="15" value="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Wisdom</label>
+                        <input type="number" id="wisdom" min="8" max="15" value="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Charisma</label>
+                        <input type="number" id="charisma" min="8" max="15" value="8">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" onclick="calculatePoints()">Calculate</button>
+                    <button type="reset" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+
+            <div id="resultsSection" style="display: none;">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Ability</th>
+                            <th>Base Score</th>
+                            <th>Racial Bonus</th>
+                            <th>Total</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody"></tbody>
+                </table>
+                <p>Total Points Used: <span id="totalPoints">0</span></p>
+                <p>Points Remaining: <span id="remainingPoints">27</span></p>
+            </div>
+        </div>
+
+        <section class="about-content">
+            <h2>About the 5e Point Buy Calculator</h2>
+            <p>This calculator helps Dungeons & Dragons 5th Edition players create balanced characters using the point buy system. It allows you to:</p>
+            <ul>
+                <li>Distribute ability scores within official point buy rules</li>
+                <li>Customize racial ability score modifiers</li>
+                <li>Adjust campaign-specific rules like maximum/minimum scores</li>
+                <li>Track point expenditure in real-time</li>
+            </ul>
+            <p>To use the calculator: 1) Set your campaign's point buy parameters 2) Select your character's race 3) Adjust ability scores 4) Review racial modifiers 5) Click calculate to see your total point expenditure. The system automatically validates scores and prevents overspending.</p>
+        </section>
+    </main>
+
+    <script>
+        const raceModifiers = {
+            human: { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1 },
+            elf: { dex: 2, int: 1 },
+            dwarf: { con: 2 },
+            halfling: { dex: 2, cha: 1 }
+        };
+
+        function calculatePoints() {
+            const min = parseInt(document.getElementById('minAttribute').value);
+            const max = parseInt(document.getElementById('maxAttribute').value);
+            const costPerPoint = parseInt(document.getElementById('pointCost').value);
+            const availablePoints = parseInt(document.getElementById('availablePoints').value);
+            
+            const abilities = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
+            let totalCost = 0;
+            let valid = true;
+
+            abilities.forEach(ability => {
+                const value = parseInt(document.getElementById(ability).value);
+                if (value < min || value > max) {
+                    showError(`Invalid ${ability} value (must be between ${min}-${max})`);
+                    valid = false;
+                }
+                totalCost += (value - 8) * costPerPoint;
+            });
+
+            if (totalCost > availablePoints) {
+                showError(`Exceeds available points by ${totalCost - availablePoints}`);
+                valid = false;
+            }
+
+            if (valid) {
+                displayResults(totalCost);
+            }
+        }
+
+        function displayResults(totalCost) {
+            const resultsBody = document.getElementById('resultsBody');
+            resultsBody.innerHTML = '';
+            const availablePoints = parseInt(document.getElementById('availablePoints').value);
+            
+            ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'].forEach(ability => {
+                const base = parseInt(document.getElementById(ability).value);
+                const raceBonus = raceModifiers[document.getElementById('raceSelect').value][ability.slice(0,3)] || 0;
+                const cost = (base - 8) * parseInt(document.getElementById('pointCost').value);
+                
+                resultsBody.innerHTML += `
+                    <tr>
+                        <td>${ability.charAt(0).toUpperCase() + ability.slice(1)}</td>
+                        <td>${base}</td>
+                        <td>${raceBonus}</td>
+                        <td>${base + raceBonus}</td>
+                        <td>${cost}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('totalPoints').textContent = totalCost;
+            document.getElementById('remainingPoints').textContent = availablePoints - totalCost;
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/cubic-yards-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Cubic Yards Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/blox-fruits-trade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Blox Fruits Trade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/square-footage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Square Footage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/palworld-breeding-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Palworld Breeding Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/inverse-function-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">inverse function calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/wolframalpha-implicit-differentiation-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">WolframAlpha Implicit Differentiation Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
