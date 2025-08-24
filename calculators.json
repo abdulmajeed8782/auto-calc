@@ -36,6 +36,12 @@
     "fileName": "bmi-calculator.html"
   },
   {
+    "name": "boat-loan-calculator",
+    "description": "Calculates monthly boat loan payments and generates amortization schedules.",
+    "category": "finance",
+    "fileName": "boat-loan-calculator.html"
+  },
+  {
     "name": "bra-size-calculator",
     "description": "Calculates bra size based on bust and band measurements and converts between international size standards.",
     "category": "clothing",
