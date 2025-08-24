@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="quadratic-formula-calculator">
+    <meta name="calculator-description" content="Calculates the roots of a quadratic equation using the quadratic formula.">
+    <meta name="calculator-category" content="math">
+    <title>Quadratic Formula Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .calculate-btn {
+            background: #6366f1;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .error {
+            color: #ef4444;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .about-content {
+            margin-top: 2rem;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .about-content h2 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav a {
+                margin-left: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Quadratic Formula Calculator</h1>
+            <form id="calculatorForm">
+                <div class="input-group">
+                    <label for="a">a =</label>
+                    <input type="text" id="a" required>
+                </div>
+                <div class="input-group">
+                    <label for="b">b =</label>
+                    <input type="text" id="b" required>
+                </div>
+                <div class="input-group">
+                    <label for="c">c =</label>
+                    <input type="text" id="c" required>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="calculate-btn" onclick="calculate()">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+            <div class="results" id="results">
+                <strong>Roots:</strong>
+                <div id="output"></div>
+            </div>
+            <div class="error" id="error"></div>
+        </div>
+
+        <section class="about-content">
+            <h2>About the Quadratic Formula Calculator</h2>
+            <p>This calculator solves quadratic equations of the form ax² + bx + c = 0 using the quadratic formula. The quadratic formula (x = (-b ± √(b² - 4ac)) / (2a)) provides the roots of any quadratic equation, whether they are real or complex numbers.</p>
+            <p><strong>How to use:</strong> Enter the coefficients a, b, and c from your quadratic equation. The calculator will instantly compute and display the roots. Ensure 'a' is not zero for valid quadratic equations.</p>
+            <p><strong>Why it's useful:</strong> This tool eliminates manual calculation errors and quickly handles complex number calculations. It's ideal for students learning algebra, engineers solving real-world problems, and anyone needing to verify their quadratic equation solutions.</p>
+        </section>
+    </main>
+
+    <script>
+        function calculate() {
+            const a = parseFloat(document.getElementById('a').value);
+            const b = parseFloat(document.getElementById('b').value);
+            const c = parseFloat(document.getElementById('c').value);
+            const resultsDiv = document.getElementById('results');
+            const outputDiv = document.getElementById('output');
+            const errorDiv = document.getElementById('error');
+
+            errorDiv.style.display = 'none';
+            resultsDiv.style.display = 'none';
+
+            if (isNaN(a) || isNaN(b) || isNaN(c)) {
+                showError('Please enter valid numbers in all fields');
+                return;
+            }
+
+            if (a === 0) {
+                showError('Coefficient "a" cannot be zero');
+                return;
+            }
+
+            const discriminant = b*b - 4*a*c;
+            let solution;
+
+            if (discriminant > 0) {
+                const root1 = (-b + Math.sqrt(discriminant)) / (2*a);
+                const root2 = (-b - Math.sqrt(discriminant)) / (2*a);
+                solution = `x₁ = ${root1.toFixed(2)}, x₂ = ${root2.toFixed(2)}`;
+            } else if (discriminant === 0) {
+                const root = -b/(2*a);
+                solution = `x = ${root.toFixed(2)} (double root)`;
+            } else {
+                const realPart = (-b/(2*a)).toFixed(2);
+                const imaginaryPart = (Math.sqrt(-discriminant)/(2*a)).toFixed(2);
+                solution = `x₁ = ${realPart} + ${imaginaryPart}i<br>x₂ = ${realPart} - ${imaginaryPart}i`;
+            }
+
+            outputDiv.innerHTML = solution;
+            resultsDiv.style.display = 'block';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/chipotle-nutrition-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Chipotle Nutrition Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/snow-day-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Snow Day Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/final-grade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Final Grade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/compound-interest-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Compound Interest Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/bmi-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Bmi Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
