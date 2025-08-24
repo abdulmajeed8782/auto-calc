@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="pokemon-damage-calculator">
+    <meta name="calculator-description" content="Calculates the damage dealt by a Pokemon's move during battle based on stats, types, and modifiers.">
+    <meta name="calculator-category" content="gaming">
+    <title>Pokemon Damage Calculator</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 100%;
+        }
+
+        input:focus {
+            outline: 2px solid #8b5cf6;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .calculate-btn {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .error-message {
+            color: #dc2626;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .about-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            line-height: 1.6;
+        }
+
+        .about-content h2 {
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .about-content ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Pokemon Damage Calculator</h1>
+            <form id="calculatorForm">
+                <div class="form-group">
+                    <label for="level">Pokemon Level</label>
+                    <input type="number" id="level" required>
+                </div>
+                <div class="form-group">
+                    <label for="attack">Attack Stat</label>
+                    <input type="number" id="attack" required>
+                </div>
+                <div class="form-group">
+                    <label for="basePower">Move Base Power</label>
+                    <input type="number" id="basePower" required>
+                </div>
+                <div class="form-group">
+                    <label for="defense">Defense Stat</label>
+                    <input type="number" id="defense" required>
+                </div>
+                <div class="form-group">
+                    <label for="modifiers">Modifiers</label>
+                    <input type="number" id="modifiers" step="0.1" value="1" required>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="calculate-btn" onclick="calculateDamage()">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+            <div class="results" id="results">
+                <strong>Damage Dealt:</strong> <span id="damageOutput"></span>
+            </div>
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+
+        <section class="about-content">
+            <h2>About the Pokemon Damage Calculator</h2>
+            <p>This calculator helps trainers predict the damage output of Pokemon moves during battles. By considering key battle factors, you can make strategic decisions about move selection and team composition.</p>
+            
+            <h3>How to Use:</h3>
+            <ul>
+                <li>Enter your Pokemon's level and attack stat</li>
+                <li>Input the move's base power</li>
+                <li>Provide the opponent's defense stat</li>
+                <li>Include any relevant modifiers (type effectiveness, STAB, etc.)</li>
+            </ul>
+
+            <h3>Key Features:</h3>
+            <ul>
+                <li>Accurate damage calculation using official game formulas</li>
+                <li>Considers all major battle factors</li>
+                <li>Helps optimize move selection strategies</li>
+                <li>Useful for competitive battle preparation</li>
+            </ul>
+        </section>
+    </main>
+
+    <script>
+        function calculateDamage() {
+            const level = parseFloat(document.getElementById('level').value);
+            const attack = parseFloat(document.getElementById('attack').value);
+            const basePower = parseFloat(document.getElementById('basePower').value);
+            const defense = parseFloat(document.getElementById('defense').value);
+            const modifiers = parseFloat(document.getElementById('modifiers').value);
+
+            if ([level, attack, basePower, defense, modifiers].some(isNaN)) {
+                showError('Please fill all fields with valid numbers');
+                return;
+            }
+
+            const baseDamage = ((2 * level / 5 + 2) * attack * basePower / defense / 50 + 2);
+            const finalDamage = Math.floor(baseDamage * modifiers);
+
+            document.getElementById('damageOutput').textContent = finalDamage;
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/5e-point-buy-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">5e Point Buy Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/cubic-yards-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Cubic Yards Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/blox-fruits-trade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Blox Fruits Trade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/square-footage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Square Footage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/palworld-breeding-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Palworld Breeding Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/inverse-function-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">inverse function calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
