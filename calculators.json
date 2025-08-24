@@ -126,6 +126,12 @@
     "fileName": "mango-calculator.html"
   },
   {
+    "name": "partial-derivative-calculator",
+    "description": "Computes derivatives and partial derivatives of mathematical functions with configurable options and step-by-step solutions.",
+    "category": "mathematics",
+    "fileName": "partial-derivative-calculator.html"
+  },
+  {
     "name": "percent-off-calculator",
     "description": "Calculates the discounted price and savings based on a percentage off.",
     "category": "finance",
