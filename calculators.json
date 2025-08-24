@@ -210,6 +210,12 @@
     "fileName": "pokémon-damage-calculator.html"
   },
   {
+    "name": "pokémon-type-calculator",
+    "description": "Calculates the effectiveness of Pokémon types in battles based on selected types.",
+    "category": "games",
+    "fileName": "pokémon-type-calculator.html"
+  },
+  {
     "name": "quadratic-formula-calculator",
     "description": "Calculates the roots of a quadratic equation using the quadratic formula.",
     "category": "math",
