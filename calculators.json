@@ -30,6 +30,12 @@
     "fileName": "bmi-calculator.html"
   },
   {
+    "name": "bra-size-calculator",
+    "description": "Calculates bra size based on bust and band measurements and converts between international size standards.",
+    "category": "clothing",
+    "fileName": "bra-size-calculator.html"
+  },
+  {
     "name": "chipotle-nutrition-calculator",
     "description": "Calculates nutritional information for Chipotle menu items based on user selections.",
     "category": "health",
