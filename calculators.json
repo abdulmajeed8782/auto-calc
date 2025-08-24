@@ -109,8 +109,8 @@
   },
   {
     "name": "cubic-yards-calculator",
-    "description": "Calculates volume in cubic yards for various geometric shapes and provides cost estimates based on unit pricing.",
-    "category": "converter",
+    "description": "Calculates cubic yard volume for various geometric shapes and estimates material costs.",
+    "category": "construction",
     "fileName": "cubic-yards-calculator.html"
   },
   {
