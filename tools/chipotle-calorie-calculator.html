@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="chipotle-calorie-calculator">
+    <meta name="calculator-description" content="Calculates nutritional information for custom Chipotle orders based on selected menu items and quantities.">
+    <meta name="calculator-category" content="health">
+    <title>Chipotle Calorie Calculator</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .calculator-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        select:focus, input:focus {
+            outline: 2px solid #764ba2;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .calculate-btn {
+            background: #4a5568;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e53e3e;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error {
+            color: #e53e3e;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav {
+                margin-top: 1rem;
+            }
+
+            nav a {
+                display: block;
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="calculator-container">
+        <h1>Chipotle Calorie Calculator</h1>
+        <form id="calculatorForm">
+            <div class="form-group">
+                <label for="base">Base Item</label>
+                <select id="base" required>
+                    <option value="" disabled selected>Select base</option>
+                    <option value="500">Burrito Bowl (500 cal)</option>
+                    <option value="300">Salad (300 cal)</option>
+                    <option value="320">Tacos (320 cal)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="protein">Protein</label>
+                <select id="protein" required>
+                    <option value="" disabled selected>Select protein</option>
+                    <option value="180">Chicken (180 cal)</option>
+                    <option value="190">Steak (190 cal)</option>
+                    <option value="220">Carnitas (220 cal)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" min="1" value="1" required>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="calculate-btn" onclick="calculateCalories()">Calculate</button>
+                <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+            </div>
+
+            <div class="error" id="errorMessage"></div>
+            <div class="results" id="results">
+                <h3>Total Calories: <span id="totalCalories">0</span></h3>
+            </div>
+        </form>
+    </div>
+
+    <section class="about-content">
+        <h2>About This Calculator</h2>
+        <p>The Chipotle Calorie Calculator helps you make informed decisions about your meal choices by providing nutritional information for custom Chipotle orders. Simply select your base item, protein, and quantity to instantly see the total calorie count for your meal.</p>
+        
+        <h3>How to Use</h3>
+        <p>1. Select your preferred base item from the dropdown menu<br>
+        2. Choose your protein option<br>
+        3. Enter the quantity of meals<br>
+        4. Click "Calculate" to see your total calories</p>
+
+        <h3>Why It's Useful</h3>
+        <p>This tool is ideal for health-conscious individuals, people tracking macros, or anyone wanting to maintain nutritional awareness while enjoying Chipotle meals. It helps you plan your meals according to your dietary needs and goals.</p>
+    </section>
+
+    <script>
+        function calculateCalories() {
+            const base = document.getElementById('base');
+            const protein = document.getElementById('protein');
+            const quantity = document.getElementById('quantity');
+            const error = document.getElementById('errorMessage');
+            const results = document.getElementById('results');
+
+            error.style.display = 'none';
+            results.style.display = 'none';
+
+            if (!base.value || !protein.value || !quantity.value) {
+                error.textContent = 'Please fill in all required fields';
+                error.style.display = 'block';
+                return;
+            }
+
+            if (quantity.value < 1) {
+                error.textContent = 'Quantity must be at least 1';
+                error.style.display = 'block';
+                return;
+            }
+
+            const total = (parseInt(base.value) + parseInt(protein.value)) * parseInt(quantity.value);
+            document.getElementById('totalCalories').textContent = total;
+            results.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/breeding-combos-&-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Breeding Combos & Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/double-integral-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Double Integral Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/chronological-age-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Chronological Age Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/bra-size-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Bra Size Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/square-root-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Square Root Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/quadratic-formula-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Quadratic Formula Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
