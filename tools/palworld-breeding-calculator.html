@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="palworld-breeding-calculator">
+    <meta name="calculator-description" content="Calculates optimal breeding combinations and outcomes for creatures in Palworld.">
+    <meta name="calculator-category" content="gaming">
+    <title>Palworld Breeding Calculator</title>
+    <style>
+        :root {
+            --header-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --primary: #4f46e5;
+            --error: #dc2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: var(--header-gradient);
+            padding: 1rem;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .calculate-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .error-message {
+            color: var(--error);
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .about-content {
+            margin: 4rem 0;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .about-content h2 {
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Palworld Breeding Calculator</h1>
+            <div class="calculator-grid">
+                <div class="parent-inputs">
+                    <h3>Parent 1</h3>
+                    <div class="input-group">
+                        <label>Health</label>
+                        <input type="number" id="parent1-health" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Attack</label>
+                        <input type="number" id="parent1-attack" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Defense</label>
+                        <input type="number" id="parent1-defense" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Speed</label>
+                        <input type="number" id="parent1-speed" required>
+                    </div>
+                </div>
+
+                <div class="parent-inputs">
+                    <h3>Parent 2</h3>
+                    <div class="input-group">
+                        <label>Health</label>
+                        <input type="number" id="parent2-health" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Attack</label>
+                        <input type="number" id="parent2-attack" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Defense</label>
+                        <input type="number" id="parent2-defense" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Speed</label>
+                        <input type="number" id="parent2-speed" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+            
+            <div class="button-group">
+                <button class="calculate-btn" onclick="calculateResults()">Calculate</button>
+                <button class="clear-btn" onclick="clearForm()">Clear</button>
+            </div>
+
+            <table class="results-table" id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>Stat</th>
+                        <th>Parent 1</th>
+                        <th>Parent 2</th>
+                        <th>Base Value</th>
+                        <th>Variation</th>
+                        <th>Offspring</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody">
+                </tbody>
+            </table>
+        </div>
+
+        <section class="about-content">
+            <h2>About the Palworld Breeding Calculator</h2>
+            <p>This calculator helps Palworld players determine the potential outcomes of breeding different creatures. By inputting the stats of two parent creatures, you can predict the likely attributes of their offspring with calculated precision.</p>
+            
+            <h3>How It Works</h3>
+            <p>The calculator uses the following formula to determine offspring stats:<br>
+            <strong>Offspring Stat = (Parent1 Stat × 0.5 + Parent2 Stat × 0.5) + Random Variation</strong></p>
+            
+            <p>Key features:
+                <ul>
+                    <li>Considers four core attributes: Health, Attack, Defense, and Speed</li>
+                    <li>Includes natural genetic variation in offspring stats</li>
+                    <li>Provides clear comparison between parent and offspring capabilities</li>
+                </ul>
+            </p>
+
+            <h3>Why Use This Calculator?</h3>
+            <p>Optimize your breeding strategy by:
+                <ul>
+                    <li>Predicting potential offspring stats before breeding</li>
+                    <li>Identifying optimal parent combinations</li>
+                    <li>Saving time and resources in your Palworld adventures</li>
+                </ul>
+            </p>
+        </section>
+    </main>
+
+    <script>
+        function calculateResults() {
+            const parent1 = {
+                health: parseFloat(document.getElementById('parent1-health').value),
+                attack: parseFloat(document.getElementById('parent1-attack').value),
+                defense: parseFloat(document.getElementById('parent1-defense').value),
+                speed: parseFloat(document.getElementById('parent1-speed').value)
+            };
+
+            const parent2 = {
+                health: parseFloat(document.getElementById('parent2-health').value),
+                attack: parseFloat(document.getElementById('parent2-attack').value),
+                defense: parseFloat(document.getElementById('parent2-defense').value),
+                speed: parseFloat(document.getElementById('parent2-speed').value)
+            };
+
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.style.display = 'none';
+
+            if (isInvalid(parent1) || isInvalid(parent2)) {
+                errorMessage.textContent = 'Please enter valid numbers in all fields';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const results = calculateOffspringStats(parent1, parent2);
+            displayResults(results);
+        }
+
+        function isInvalid(parent) {
+            return Object.values(parent).some(isNaN);
+        }
+
+        function calculateOffspringStats(p1, p2) {
+            const stats = ['health', 'attack', 'defense', 'speed'];
+            return stats.map(stat => {
+                const base = (p1[stat] * 0.5 + p2[stat] * 0.5);
+                const variation = +(Math.random() * 4 - 2).toFixed(1);
+                return {
+                    stat: stat.charAt(0).toUpperCase() + stat.slice(1),
+                    p1: p1[stat],
+                    p2: p2[stat],
+                    base: base.toFixed(1),
+                    variation,
+                    total: (base + variation).toFixed(1)
+                };
+            });
+        }
+
+        function displayResults(results) {
+            const tbody = document.getElementById('resultsBody');
+            tbody.innerHTML = results.map(result => `
+                <tr>
+                    <td>${result.stat}</td>
+                    <td>${result.p1}</td>
+                    <td>${result.p2}</td>
+                    <td>${result.base}</td>
+                    <td>${result.variation}</td>
+                    <td><strong>${result.total}</strong></td>
+                </tr>
+            `).join('');
+
+            document.getElementById('resultsTable').style.display = 'table';
+        }
+
+        function clearForm() {
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            document.getElementById('resultsTable').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/inverse-function-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">inverse function calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/wolframalpha-implicit-differentiation-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">WolframAlpha Implicit Differentiation Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/binomial-distribution-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Binomial Distribution Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/pokémon-type-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Pokémon Type Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/dot-product-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Dot Product Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/grade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Grade Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
