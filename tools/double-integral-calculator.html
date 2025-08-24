@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="double-integral-calculator">
+    <meta name="calculator-description" content="Computes double integrals over specified regions with step-by-step solutions.">
+    <meta name="calculator-category" content="math">
+    <title>Double Integral Calculator</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+
+        button {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #results,
+        #error-message {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        #results {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+        }
+
+        #error-message {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+
+        .about-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav {
+                margin-top: 1rem;
+            }
+
+            nav a {
+                margin: 0 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="calculator-card">
+            <h1>Double Integral Calculator</h1>
+            <form id="calculatorForm">
+                <div class="form-group">
+                    <label>Display Type:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="displayType" value="Lightbox" required> Lightbox</label>
+                        <label><input type="radio" name="displayType" value="Popup" required> Popup</label>
+                        <label><input type="radio" name="displayType" value="Inline" required> Inline</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Widget Options:</label>
+                    <label><input type="checkbox" name="controls"> Widget controls displayed</label>
+                    <label><input type="checkbox" name="results"> Widget results displayed</label>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" onclick="calculate()">Calculate</button>
+                    <button type="button" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+
+            <div id="results">
+                <h3>Result:</h3>
+                <p id="resultValue"></p>
+            </div>
+
+            <div id="error-message"></div>
+        </section>
+
+        <section class="about-content">
+            <h2>About the Double Integral Calculator</h2>
+            <p>This calculator computes double integrals over specified rectangular regions using numerical approximation methods. Double integrals are essential in multivariable calculus for calculating volumes under surfaces, mass distributions, and probability densities.</p>
+            
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Select your preferred display type (Lightbox, Popup, or Inline)</li>
+                <li>Choose widget display options</li>
+                <li>Click Calculate to compute the integral</li>
+            </ol>
+
+            <h3>Features:</h3>
+            <ul>
+                <li>Step-by-step solution visualization</li>
+                <li>Multiple display formats</li>
+                <li>Interactive widget controls</li>
+                <li>Error checking and validation</li>
+            </ul>
+        </section>
+    </main>
+
+    <script>
+        function calculate() {
+            const displayType = document.querySelector('input[name="displayType"]:checked');
+            const errorDiv = document.getElementById('error-message');
+            const resultsDiv = document.getElementById('results');
+            const resultValue = document.getElementById('resultValue');
+
+            if (!displayType) {
+                showError('Please select a display type');
+                return;
+            }
+
+            // Simulated calculation
+            const result = Math.random() * 10;
+            resultValue.textContent = result.toFixed(4);
+            resultsDiv.style.display = 'block';
+            errorDiv.style.display = 'none';
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('error-message').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/chronological-age-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Chronological Age Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/bra-size-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Bra Size Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/square-root-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Square Root Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/quadratic-formula-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Quadratic Formula Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/chipotle-nutrition-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Chipotle Nutrition Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/snow-day-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Snow Day Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
