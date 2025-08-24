@@ -102,6 +102,12 @@
     "fileName": "chronological-age-calculator.html"
   },
   {
+    "name": "grade-calculator",
+    "description": "Calculates current course grades and helps plan final exam scores based on assignment details and weights.",
+    "category": "education",
+    "fileName": "class-grade-calculator.html"
+  },
+  {
     "name": "critical-value-calculator",
     "description": "Calculates critical values for T, Z, Chi-Square, F, and R statistical distributions based on significance level and degrees of freedom.",
     "category": "statistics",
