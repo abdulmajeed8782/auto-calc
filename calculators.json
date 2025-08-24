@@ -126,6 +126,12 @@
     "fileName": "grade-calculator.html"
   },
   {
+    "name": "inverse-matrix-calculator",
+    "description": "Calculates the inverse of a square matrix using specified dimensions.",
+    "category": "mathematics",
+    "fileName": "inverse-matrix-calculator.html"
+  },
+  {
     "name": "loan-calculator",
     "description": "A simple loan calculator to test automation scripts.",
     "category": "loan",
