@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="critical-value-calculator">
+    <meta name="calculator-description" content="Calculates critical values for T, Z, Chi-Square, F, and R statistical distributions based on significance level and degrees of freedom.">
+    <meta name="calculator-category" content="statistics">
+    <title>Critical Value Calculator</title>
+    <style>
+        :root {
+            --header-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--header-gradient);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        .calculator-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .calculator-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select, input {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .calculate-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e53e3e;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-container, nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav a {
+                margin: 0.5rem 0;
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="calculator-container">
+        <h1>Critical Value Calculator</h1>
+        <form class="calculator-form" id="calculatorForm">
+            <div class="form-group">
+                <label for="distribution">Distribution Type</label>
+                <select id="distribution" required>
+                    <option value="z">Z (Normal)</option>
+                    <option value="t">Student's t</option>
+                    <option value="chi2">Chi-Square</option>
+                    <option value="f">F</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="alpha">Significance Level (α)</label>
+                <select id="alpha" required>
+                    <option value="0.01">0.01</option>
+                    <option value="0.05">0.05</option>
+                    <option value="0.10">0.10</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="dof">Degrees of Freedom</label>
+                <input type="number" id="dof" min="1" step="1" required>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="calculate-btn">Calculate</button>
+                <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+            </div>
+        </form>
+
+        <div class="results" id="results">
+            <strong>Critical Value:</strong> <span id="criticalValue">-</span>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+    </main>
+
+    <section class="about-content">
+        <h2>About the Critical Value Calculator</h2>
+        <p>This calculator helps researchers and students determine critical values for various statistical distributions, which are essential for hypothesis testing and confidence interval construction. Critical values define the threshold for statistical significance in hypothesis tests.</p>
+
+        <h3>Supported Distributions</h3>
+        <ul>
+            <li><strong>Z-distribution:</strong> Used for normal distributions with known population variance</li>
+            <li><strong>t-distribution:</strong> For small sample sizes with unknown population variance</li>
+            <li><strong>Chi-Square:</strong> Used in goodness-of-fit tests and variance analysis</li>
+            <li><strong>F-distribution:</strong> Applied in ANOVA and regression analysis</li>
+        </ul>
+
+        <h3>How to Use</h3>
+        <ol>
+            <li>Select your desired statistical distribution</li>
+            <li>Choose the significance level (α) from the dropdown</li>
+            <li>Enter the appropriate degrees of freedom</li>
+            <li>Click Calculate to get your critical value</li>
+        </ol>
+
+        <p>The calculator automatically handles one-tailed and two-tailed tests based on the selected distribution. Results are calculated using inverse distribution functions to ensure statistical accuracy.</p>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+    <script>
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateCriticalValue();
+        });
+
+        function calculateCriticalValue() {
+            const distribution = document.getElementById('distribution').value;
+            const alpha = parseFloat(document.getElementById('alpha').value);
+            const dof = parseInt(document.getElementById('dof').value);
+            const results = document.getElementById('results');
+            const error = document.getElementById('errorMessage');
+
+            // Clear previous messages
+            error.style.display = 'none';
+            results.style.display = 'none';
+
+            try {
+                if (isNaN(dof) || dof <= 0) throw new Error('Please enter valid degrees of freedom');
+                
+                let criticalValue;
+                switch(distribution) {
+                    case 'z':
+                        criticalValue = jStat.normal.inv(1 - alpha/2, 0, 1);
+                        break;
+                    case 't':
+                        criticalValue = jStat.studentt.inv(1 - alpha/2, dof);
+                        break;
+                    case 'chi2':
+                        criticalValue = jStat.chisquare.inv(1 - alpha, dof);
+                        break;
+                    case 'f':
+                        criticalValue = jStat.centralF.inv(1 - alpha, dof, dof2);
+                        break;
+                    default:
+                        throw new Error('Invalid distribution selected');
+                }
+
+                document.getElementById('criticalValue').textContent = criticalValue.toFixed(4);
+                results.style.display = 'block';
+            } catch (err) {
+                error.textContent = 'Error: ' + err.message;
+                error.style.display = 'block';
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/percent-error-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Percent Error Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/blox-fruit-trade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Blox Fruit Trade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/triple-integral-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Triple Integral Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/female-delusion-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Female Delusion Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/inverse-matrix-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Inverse Matrix Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/board-footage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Board Footage Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
