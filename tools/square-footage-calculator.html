@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square Footage Calculator</title>
+    <meta name="calculator-name" content="square-footage-calculator">
+    <meta name="calculator-description" content="Calculates the area of various geometric shapes and provides cost estimates based on optional pricing.">
+    <meta name="calculator-category" content="converter">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            color: white;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .calculator {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        input, select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #667eea;
+            color: white;
+            transition: opacity 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #results {
+            margin-top: 2rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .error {
+            color: #e53e3e;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #fef2f2;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="calculator">
+        <form id="calculatorForm">
+            <!-- Rectangle -->
+            <div class="input-group">
+                <label>Length</label>
+                <input type="text" id="length">
+                <select id="length-unit">
+                    <option value="ft">Feet</option>
+                    <option value="in">Inches</option>
+                    <option value="m">Meters</option>
+                    <option value="cm">Centimeters</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Width</label>
+                <input type="text" id="width">
+                <select id="width-unit">
+                    <option value="ft">Feet</option>
+                    <option value="in">Inches</option>
+                    <option value="m">Meters</option>
+                    <option value="cm">Centimeters</option>
+                </select>
+            </div>
+
+            <!-- Circle -->
+            <div class="input-group">
+                <label>Diameter</label>
+                <input type="text" id="diameter">
+                <select id="diameter-unit">
+                    <option value="ft">Feet</option>
+                    <option value="in">Inches</option>
+                    <option value="m">Meters</option>
+                    <option value="cm">Centimeters</option>
+                </select>
+            </div>
+
+            <!-- Triangle -->
+            <div class="input-group">
+                <label>Base</label>
+                <input type="text" id="base">
+                <select id="base-unit">
+                    <option value="ft">Feet</option>
+                    <option value="in">Inches</option>
+                    <option value="m">Meters</option>
+                    <option value="cm">Centimeters</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Height</label>
+                <input type="text" id="height">
+                <select id="height-unit">
+                    <option value="ft">Feet</option>
+                    <option value="in">Inches</option>
+                    <option value="m">Meters</option>
+                    <option value="cm">Centimeters</option>
+                </select>
+            </div>
+
+            <!-- Additional inputs -->
+            <div class="input-group">
+                <label>Quantity</label>
+                <input type="text" id="quantity">
+                <div></div>
+            </div>
+            <div class="input-group">
+                <label>Price (optional)</label>
+                <input type="text" id="price">
+                <select id="price-unit">
+                    <option value="$">$</option>
+                    <option value="€">€</option>
+                    <option value="£">£</option>
+                </select>
+            </div>
+
+            <div class="button-group">
+                <button type="submit">Calculate</button>
+                <button type="button" id="clearBtn">Clear</button>
+            </div>
+        </form>
+
+        <div class="error" id="errorMessage"></div>
+        <div id="results"></div>
+    </main>
+
+    <section class="about-content">
+        <h2>About the Square Footage Calculator</h2>
+        <p>This calculator helps you determine the area of various geometric shapes and provides cost estimates for materials or services based on your inputs. Perfect for home improvement projects, construction planning, or academic calculations.</p>
+        
+        <h3>How to Use</h3>
+        <ol>
+            <li>Enter measurements for your chosen shape (length/width for rectangles, diameter for circles, etc.)</li>
+            <li>Select appropriate units for each measurement</li>
+            <li>Add quantity and optional pricing information for cost estimates</li>
+            <li>Click Calculate to see results</li>
+        </ol>
+
+        <h3>Why It's Useful</h3>
+        <ul>
+            <li>Saves time on manual calculations</li>
+            <li>Provides instant cost projections</li>
+            <li>Supports multiple measurement units</li>
+            <li>Works for various geometric shapes</li>
+        </ul>
+    </section>
+
+    <script>
+        const form = document.getElementById('calculatorForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const resultsDiv = document.getElementById('results');
+
+        const unitConversions = {
+            'ft': 1,
+            'in': 1/12,
+            'm': 3.28084,
+            'cm': 0.0328084
+        };
+
+        function convertToFeet(value, unit) {
+            return value * unitConversions[unit];
+        }
+
+        function calculateArea(inputs) {
+            // Rectangle
+            if (inputs.length && inputs.width) {
+                return inputs.length * inputs.width;
+            }
+            // Circle
+            if (inputs.diameter) {
+                const radius = inputs.diameter / 2;
+                return Math.PI * radius * radius;
+            }
+            // Triangle
+            if (inputs.base && inputs.height) {
+                return (inputs.base * inputs.height) / 2;
+            }
+            return null;
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            errorMessage.style.display = 'none';
+            resultsDiv.innerHTML = '';
+
+            const inputs = {
+                length: parseFloat(document.getElementById('length').value),
+                lengthUnit: document.getElementById('length-unit').value,
+                width: parseFloat(document.getElementById('width').value),
+                widthUnit: document.getElementById('width-unit').value,
+                diameter: parseFloat(document.getElementById('diameter').value),
+                diameterUnit: document.getElementById('diameter-unit').value,
+                base: parseFloat(document.getElementById('base').value),
+                baseUnit: document.getElementById('base-unit').value,
+                height: parseFloat(document.getElementById('height').value),
+                heightUnit: document.getElementById('height-unit').value,
+                quantity: parseFloat(document.getElementById('quantity').value) || 1,
+                price: parseFloat(document.getElementById('price').value),
+                priceUnit: document.getElementById('price-unit').value
+            };
+
+            // Convert all values to feet
+            const converted = {};
+            try {
+                if (inputs.length) converted.length = convertToFeet(inputs.length, inputs.lengthUnit);
+                if (inputs.width) converted.width = convertToFeet(inputs.width, inputs.widthUnit);
+                if (inputs.diameter) converted.diameter = convertToFeet(inputs.diameter, inputs.diameterUnit);
+                if (inputs.base) converted.base = convertToFeet(inputs.base, inputs.baseUnit);
+                if (inputs.height) converted.height = convertToFeet(inputs.height, inputs.heightUnit);
+            } catch {
+                errorMessage.textContent = 'Invalid unit conversion';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const area = calculateArea(converted);
+            if (!area) {
+                errorMessage.textContent = 'Please enter valid measurements for a supported shape';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const totalArea = area * (inputs.quantity || 1);
+            let cost = '';
+            if (inputs.price) {
+                cost = (totalArea * inputs.price).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                });
+            }
+
+            resultsDiv.innerHTML = `
+                <table>
+                    <tr>
+                        <th>Total Area</th>
+                        <td>${totalArea.toFixed(2)} sq ft</td>
+                    </tr>
+                    ${inputs.price ? `
+                    <tr>
+                        <th>Total Cost</th>
+                        <td>${cost}</td>
+                    </tr>
+                    ` : ''}
+                </table>
+            `;
+        });
+
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            form.reset();
+            resultsDiv.innerHTML = '';
+            errorMessage.style.display = 'none';
+        });
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/chipotle-calorie-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Chipotle Calorie Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/breeding-combos-&-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Breeding Combos & Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/double-integral-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Double Integral Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/chronological-age-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Chronological Age Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/bra-size-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Bra Size Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/square-root-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Square Root Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
