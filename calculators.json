@@ -90,6 +90,12 @@
     "fileName": "percentage-calculator.html"
   },
   {
+    "name": "quadratic-formula-calculator",
+    "description": "Calculates the roots of a quadratic equation using the quadratic formula.",
+    "category": "math",
+    "fileName": "quadratic-formula-calculator.html"
+  },
+  {
     "name": "severance-pay-calculator",
     "description": "Calculates the severance pay amount based on employment duration, salary, and other factors.",
     "category": "finance",
