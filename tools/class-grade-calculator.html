@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="grade-calculator">
+    <meta name="calculator-description" content="Calculates current course grades and helps plan final exam scores based on assignment details and weights.">
+    <meta name="calculator-category" content="education">
+    <title>Grade Calculator</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #3b82f6;
+            --text: #1f2937;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f4f6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.9rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        input:focus {
+            outline: 2px solid var(--primary);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .assignment-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .results {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 6px;
+        }
+
+        .error {
+            color: #dc2626;
+            margin: 1rem 0;
+            padding: 0.5rem;
+            background: #fee2e2;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .about-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .about-content h2 {
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+
+            .assignment-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Grade Calculator</h1>
+            <div class="error" id="error"></div>
+            
+            <div class="input-group">
+                <label>Input Type</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="input-type" value="points" checked> Points</label>
+                    <label><input type="radio" name="input-type" value="percentage"> Percentage</label>
+                    <label><input type="radio" name="input-type" value="letters"> Letters</label>
+                </div>
+            </div>
+
+            <div id="assignments">
+                <div class="assignment-row">
+                    <div>
+                        <label>Grade</label>
+                        <input type="number" step="0.01" class="grade">
+                    </div>
+                    <div>
+                        <label>Weight (%)</label>
+                        <input type="number" step="0.01" class="weight">
+                    </div>
+                </div>
+            </div>
+            <button onclick="addAssignment()">Add Assignment</button>
+
+            <div class="input-group">
+                <label>Final Exam Weight (%)</label>
+                <input type="number" step="0.01" id="final-weight">
+            </div>
+
+            <div class="input-group">
+                <label>Target Grade (%)</label>
+                <input type="number" step="0.01" id="target-grade">
+            </div>
+
+            <div class="button-group">
+                <button onclick="calculate()">Calculate</button>
+                <button onclick="clearForm()" style="background: #64748b; margin-left: 1rem;">Clear</button>
+            </div>
+
+            <div class="results" id="results"></div>
+        </div>
+
+        <section class="about-content">
+            <h2>About the Grade Calculator</h2>
+            <p>This Grade Calculator helps students determine their current course standing and plan for final exams. By inputting assignment grades and their respective weights, users can calculate their current overall percentage in the course. The calculator also enables strategic exam preparation by showing the minimum final exam score needed to achieve a desired course grade.</p>
+            <p>To use the calculator: 1) Select your preferred input format (points, percentage, or letter grades), 2) Add all completed assignments with their weights, 3) Enter your final exam weight and target grade. The calculator will instantly show your current grade and the required final exam score to reach your target.</p>
+            <p>This tool is particularly useful for students who want to track their academic progress, identify areas needing improvement, and set realistic goals for final assessments. It eliminates guesswork in grade calculation and helps students make data-driven study decisions.</p>
+        </section>
+    </main>
+
+    <script>
+        function addAssignment() {
+            const newRow = document.createElement('div');
+            newRow.className = 'assignment-row';
+            newRow.innerHTML = `
+                <div>
+                    <label>Grade</label>
+                    <input type="number" step="0.01" class="grade">
+                </div>
+                <div>
+                    <label>Weight (%)</label>
+                    <input type="number" step="0.01" class="weight">
+                </div>
+            `;
+            document.getElementById('assignments').appendChild(newRow);
+        }
+
+        function validate() {
+            const grades = document.querySelectorAll('.grade');
+            const weights = document.querySelectorAll('.weight');
+            let totalWeight = 0;
+
+            for(let i = 0; i < grades.length; i++) {
+                if(!grades[i].value || !weights[i].value) {
+                    showError('Please fill all assignment fields');
+                    return false;
+                }
+                totalWeight += parseFloat(weights[i].value);
+            }
+
+            if(totalWeight > 100) {
+                showError('Total assignment weights cannot exceed 100%');
+                return false;
+            }
+
+            return true;
+        }
+
+        function calculate() {
+            document.getElementById('error').style.display = 'none';
+            if(!validate()) return;
+
+            let currentGrade = 0;
+            let totalWeight = 0;
+            document.querySelectorAll('.assignment-row').forEach(row => {
+                const grade = parseFloat(row.querySelector('.grade').value);
+                const weight = parseFloat(row.querySelector('.weight').value);
+                currentGrade += (grade * weight);
+                totalWeight += weight;
+            });
+
+            currentGrade = totalWeight > 0 ? currentGrade / totalWeight : 0;
+
+            const finalWeight = parseFloat(document.getElementById('final-weight').value);
+            const targetGrade = parseFloat(document.getElementById('target-grade').value);
+            
+            if(!finalWeight || !targetGrade) {
+                showError('Please fill all required fields');
+                return;
+            }
+
+            const requiredFinal = ((targetGrade - (currentGrade * (1 - finalWeight/100))) / (finalWeight/100)).toFixed(2);
+            
+            document.getElementById('results').innerHTML = `
+                <p>Current Grade: ${currentGrade.toFixed(2)}%</p>
+                <p>Required Final Exam Score: ${requiredFinal}%</p>
+            `;
+        }
+
+        function clearForm() {
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('assignments').innerHTML = `
+                <div class="assignment-row">
+                    <div>
+                        <label>Grade</label>
+                        <input type="number" step="0.01" class="grade">
+                    </div>
+                    <div>
+                        <label>Weight (%)</label>
+                        <input type="number" step="0.01" class="weight">
+                    </div>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/surface-area-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Surface Area Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/critical-value-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Critical Value Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/percent-error-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Percent Error Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/blox-fruit-trade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Blox Fruit Trade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/triple-integral-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Triple Integral Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/female-delusion-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Female Delusion Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
