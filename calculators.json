@@ -150,6 +150,12 @@
     "fileName": "percentage-calculator.html"
   },
   {
+    "name": "pokémon-damage-calculator",
+    "description": "Calculates damage dealt by Pokémon moves in battles across different game generations.",
+    "category": "gaming",
+    "fileName": "pokémon-damage-calculator.html"
+  },
+  {
     "name": "quadratic-formula-calculator",
     "description": "Calculates the roots of a quadratic equation using the quadratic formula.",
     "category": "math",
