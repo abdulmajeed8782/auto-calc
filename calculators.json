@@ -90,6 +90,12 @@
     "fileName": "severance-pay-calculator.html"
   },
   {
+    "name": "snow-day-calculator",
+    "description": "Predicts the likelihood of school closures based on weather conditions and location data.",
+    "category": "weather",
+    "fileName": "snow-day-calculator.html"
+  },
+  {
     "name": "theoretical-yield-calculator",
     "description": "Calculates theoretical chemical yield based on reagent parameters and stoichiometry.",
     "category": "science",
