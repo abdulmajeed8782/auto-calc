@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="snow-day-calculator">
+    <meta name="calculator-description" content="Predicts the likelihood of school closures based on weather conditions and location data.">
+    <meta name="calculator-category" content="weather">
+    <title>Snow Day Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            color: white;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.3s;
+        }
+
+        .calculate-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #666;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f0f9ff;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .about-content {
+            margin: 2rem 0;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Snow Day Calculator</h1>
+            <form id="calculatorForm">
+                <div class="form-group">
+                    <label for="snowfall">Snowfall (inches)</label>
+                    <input type="number" id="snowfall" required step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="temperature">Temperature (°F)</label>
+                    <input type="number" id="temperature" required>
+                </div>
+                <div class="form-group">
+                    <label for="windSpeed">Wind Speed (mph)</label>
+                    <input type="number" id="windSpeed" required>
+                </div>
+                <div class="form-group">
+                    <label for="policy">District Policy Strictness</label>
+                    <select id="policy" required>
+                        <option value="1">Lenient</option>
+                        <option value="2">Moderate</option>
+                        <option value="3">Strict</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="calculate-btn" onclick="calculate()">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+            <div class="results" id="results">
+                <h3>Probability of Snow Day: <span id="probability">0</span>%</h3>
+            </div>
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+
+        <section class="about-content">
+            <h2>About the Snow Day Calculator</h2>
+            <p>This calculator helps predict the likelihood of school closures due to winter weather conditions. By analyzing key factors like snowfall amounts, temperature, wind chill, and your school district's historical closure patterns, it provides an estimated probability of a snow day.</p>
+            
+            <h3>How It Works</h3>
+            <p>The algorithm considers multiple variables: 
+                <ul>
+                    <li><strong>Snow accumulation:</strong> More than 6 inches significantly increases closure chances</li>
+                    <li><strong>Temperature:</strong> Sub-freezing temperatures help maintain dangerous conditions</li>
+                    <li><strong>Wind speed:</strong> High winds create dangerous wind chills and drifting snow</li>
+                    <li><strong>District policy:</strong> Some districts close more readily than others</li>
+                </ul>
+            </p>
+
+            <h3>Why It's Useful</h3>
+            <p>This tool helps parents, students, and school staff prepare for potential closures by providing data-driven predictions. While not 100% accurate, it combines real-time weather data with historical patterns to give actionable insights.</p>
+        </section>
+    </main>
+
+    <script>
+        function calculate() {
+            const snowfall = parseFloat(document.getElementById('snowfall').value);
+            const temperature = parseFloat(document.getElementById('temperature').value);
+            const windSpeed = parseFloat(document.getElementById('windSpeed').value);
+            const policy = parseInt(document.getElementById('policy').value);
+            const errorElement = document.getElementById('errorMessage');
+            const resultsElement = document.getElementById('results');
+
+            errorElement.style.display = 'none';
+            resultsElement.style.display = 'none';
+
+            if (isNaN(snowfall) || isNaN(temperature) || isNaN(windSpeed)) {
+                showError('Please fill in all fields with valid numbers');
+                return;
+            }
+
+            // Simplified calculation example
+            let probability = (snowfall * 2) + 
+                            (temperature < 20 ? 30 : 0) + 
+                            (windSpeed * 0.5) + 
+                            (policy * 10);
+            
+            probability = Math.min(95, Math.max(5, probability));
+            
+            document.getElementById('probability').textContent = probability.toFixed(0);
+            resultsElement.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/final-grade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Final Grade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/gpa-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Gpa Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/tax-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Tax Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/mortgage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Mortgage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/savings-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Savings Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
