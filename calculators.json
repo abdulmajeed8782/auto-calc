@@ -280,5 +280,11 @@
     "description": "Calculates weighted grades, allows final grade planning, and supports multiple grade/weight formats.",
     "category": "education",
     "fileName": "weighted-grade-calculator.html"
+  },
+  {
+    "name": "wolframalpha-implicit-differentiation-calculator",
+    "description": "Calculates derivatives of implicitly defined equations using implicit differentiation.",
+    "category": "education",
+    "fileName": "wolframalpha-implicit-differentiation-calculator.html"
   }
 ]
