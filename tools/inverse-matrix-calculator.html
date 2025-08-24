@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="inverse-matrix-calculator">
+    <meta name="calculator-description" content="Calculates the inverse of a square matrix using specified dimensions.">
+    <meta name="calculator-category" content="mathematics">
+    <title>Inverse Matrix Calculator</title>
+    <style>
+        :root {
+            --header-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--header-gradient);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .matrix-inputs {
+            display: grid;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .matrix-cell {
+            width: 100%;
+            padding: 0.5rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .calculate-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e53e3e;
+            color: white;
+        }
+
+        .results {
+            margin-top: 2rem;
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .error {
+            color: #e53e3e;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #fee2e2;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .about-content {
+            line-height: 1.6;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+
+            nav a {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Inverse Matrix Calculator</h1>
+            <div class="input-group">
+                <label>Matrix Dimension</label>
+                <input type="number" id="dimension" min="2" max="6" required>
+            </div>
+            <div id="matrixContainer"></div>
+            <div class="button-group">
+                <button type="button" class="calculate-btn" onclick="calculateInverse()">Calculate</button>
+                <button type="button" class="clear-btn" onclick="clearAll()">Clear</button>
+            </div>
+            <div class="error" id="errorMessage"></div>
+            <div class="results" id="results"></div>
+        </div>
+
+        <section class="about-content">
+            <h2>About the Inverse Matrix Calculator</h2>
+            <p>This calculator helps you find the inverse of a square matrix using the mathematical formula A⁻¹ = (1/det(A)) * adj(A), where det(A) is the determinant and adj(A) is the adjugate matrix. The inverse matrix is crucial in solving systems of linear equations, computer graphics, and engineering calculations.</p>
+            
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Enter the matrix dimension (2x2 to 6x6)</li>
+                <li>Input all matrix elements</li>
+                <li>Click Calculate to get the inverse matrix</li>
+            </ol>
+
+            <h3>Requirements:</h3>
+            <ul>
+                <li>Matrix must be square (n×n)</li>
+                <li>Determinant must not be zero</li>
+                <li>All elements must be numerical values</li>
+            </ul>
+
+            <p>This tool is particularly useful for students and professionals working with linear algebra, providing instant results and eliminating manual calculation errors.</p>
+        </section>
+    </main>
+
+    <script>
+        function createMatrixInputs() {
+            const dimension = parseInt(document.getElementById('dimension').value);
+            const container = document.getElementById('matrixContainer');
+            container.innerHTML = '';
+
+            if (dimension >= 2 && dimension <= 6) {
+                container.innerHTML = '<label>Matrix Elements</label>';
+                const matrixGrid = document.createElement('div');
+                matrixGrid.className = 'matrix-inputs';
+                matrixGrid.style.gridTemplateColumns = `repeat(${dimension}, 1fr)`;
+
+                for (let i = 0; i < dimension; i++) {
+                    for (let j = 0; j < dimension; j++) {
+                        const input = document.createElement('input');
+                        input.type = 'number';
+                        input.className = 'matrix-cell';
+                        input.placeholder = `a${i+1}${j+1}`;
+                        input.required = true;
+                        matrixGrid.appendChild(input);
+                    }
+                }
+                container.appendChild(matrixGrid);
+            }
+        }
+
+        function getMatrixValues() {
+            const inputs = document.querySelectorAll('.matrix-cell');
+            const dimension = parseInt(document.getElementById('dimension').value);
+            const matrix = [];
+            
+            for (let i = 0; i < dimension; i++) {
+                matrix[i] = [];
+                for (let j = 0; j < dimension; j++) {
+                    const value = parseFloat(inputs[i * dimension + j].value);
+                    if (isNaN(value)) return null;
+                    matrix[i][j] = value;
+                }
+            }
+            return matrix;
+        }
+
+        function calculateDeterminant(matrix) {
+            if (matrix.length === 2) {
+                return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+            }
+            
+            let det = 0;
+            for (let i = 0; i < matrix.length; i++) {
+                const subMatrix = matrix.slice(1).map(row => row.filter((_, j) => j !== i));
+                det += matrix[0][i] * (i % 2 === 0 ? 1 : -1) * calculateDeterminant(subMatrix);
+            }
+            return det;
+        }
+
+        function getCofactor(matrix, row, col) {
+            return matrix
+                .filter((_, i) => i !== row)
+                .map(r => r.filter((_, j) => j !== col));
+        }
+
+        function calculateAdjugate(matrix) {
+            const adj = [];
+            const n = matrix.length;
+            
+            for (let i = 0; i < n; i++) {
+                adj[i] = [];
+                for (let j = 0; j < n; j++) {
+                    const cofactor = calculateDeterminant(getCofactor(matrix, j, i));
+                    adj[i][j] = ((i + j) % 2 === 0 ? 1 : -1) * cofactor;
+                }
+            }
+            return adj;
+        }
+
+        function displayResults(inverseMatrix) {
+            const resultsDiv = document.getElementById('results');
+            let html = '<h3>Inverse Matrix:</h3><table>';
+            
+            inverseMatrix.forEach(row => {
+                html += '<tr>';
+                row.forEach(cell => {
+                    html += `<td>${cell.toFixed(4)}</td>`;
+                });
+                html += '</tr>';
+            });
+            html += '</table>';
+            resultsDiv.innerHTML = html;
+        }
+
+        function calculateInverse() {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.style.display = 'none';
+            
+            try {
+                const dimension = parseInt(document.getElementById('dimension').value);
+                if (isNaN(dimension) || dimension < 2 || dimension > 6) {
+                    throw new Error('Please enter a valid dimension (2-6)');
+                }
+
+                const matrix = getMatrixValues();
+                if (!matrix) throw new Error('Please fill all matrix elements with numbers');
+                
+                const det = calculateDeterminant(matrix);
+                if (det === 0) throw new Error('Matrix is not invertible (determinant is zero)');
+
+                const adjugate = calculateAdjugate(matrix);
+                const inverse = adjugate.map(row => row.map(cell => cell / det));
+                
+                displayResults(inverse);
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        function clearAll() {
+            document.getElementById('dimension').value = '';
+            document.getElementById('matrixContainer').innerHTML = '';
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        document.getElementById('dimension').addEventListener('input', createMatrixInputs);
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/board-footage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Board Footage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/mixed-fraction-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Mixed Fraction Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/boat-loan-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Boat Loan Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/pokémon-damage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Pokémon Damage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/partial-derivative-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Partial Derivative Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/d&d-5e-point-buy-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">D&D 5e Point Buy Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
