@@ -120,6 +120,12 @@
     "fileName": "d&d-5e-point-buy-calculator.html"
   },
   {
+    "name": "dot-product-calculator",
+    "description": "Calculates the dot product of two vectors with configurable significant figures.",
+    "category": "math",
+    "fileName": "dot-product-calculator.html"
+  },
+  {
     "name": "double-integral-calculator",
     "description": "Computes double integrals over specified regions with step-by-step solutions.",
     "category": "math",
