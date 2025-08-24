@@ -108,6 +108,12 @@
     "fileName": "snow-day-calculator.html"
   },
   {
+    "name": "square-root-calculator",
+    "description": "Calculates the square root of a given number.",
+    "category": "converter",
+    "fileName": "square-root-calculator.html"
+  },
+  {
     "name": "theoretical-yield-calculator",
     "description": "Calculates theoretical chemical yield based on reagent parameters and stoichiometry.",
     "category": "science",
