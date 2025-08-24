@@ -234,6 +234,12 @@
     "fileName": "quadratic-formula-calculator.html"
   },
   {
+    "name": "grade-calculator",
+    "description": "Calculates current course grades and helps plan final exam scores based on assignment details and weights.",
+    "category": "education",
+    "fileName": "semester-grade-calculator.html"
+  },
+  {
     "name": "severance-pay-calculator",
     "description": "Calculates the severance pay amount based on employment duration, salary, and other factors.",
     "category": "finance",
