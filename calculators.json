@@ -42,6 +42,12 @@
     "fileName": "chipotle-nutrition-calculator.html"
   },
   {
+    "name": "chronological-age-calculator",
+    "description": "Calculates the chronological age difference between two dates.",
+    "category": "health",
+    "fileName": "chronological-age-calculator.html"
+  },
+  {
     "name": "cross-stitch-calculator",
     "description": "Calculates finished project dimensions based on stitch counts and fabric specifications.",
     "category": "converter",
