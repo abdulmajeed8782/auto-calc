@@ -132,6 +132,12 @@
     "fileName": "mango-calculator.html"
   },
   {
+    "name": "mixed-fraction-calculator",
+    "description": "Performs arithmetic operations (addition, subtraction, multiplication, division) on mixed numbers and fractions.",
+    "category": "converter",
+    "fileName": "mixed-fraction-calculator.html"
+  },
+  {
     "name": "partial-derivative-calculator",
     "description": "Computes derivatives and partial derivatives of mathematical functions with configurable options and step-by-step solutions.",
     "category": "mathematics",
