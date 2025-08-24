@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="boat-loan-calculator">
+    <meta name="calculator-description" content="Calculates monthly boat loan payments and generates amortization schedules.">
+    <meta name="calculator-category" content="finance">
+    <title>Boat Loan Calculator</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #3b82f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        .calculator-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: 2px solid var(--primary);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .calculate-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e2e8f0;
+            color: #333;
+        }
+
+        .results {
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .error {
+            color: #dc2626;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header-container, nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav a {
+                margin: 0.5rem 0;
+                display: block;
+            }
+
+            .calculator-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="calculator-container">
+        <h1>Boat Loan Calculator</h1>
+        <form id="loanForm">
+            <div class="form-group">
+                <label>Loan Amount ($)</label>
+                <input type="number" id="loanAmount" required>
+            </div>
+
+            <div class="form-group">
+                <label>Include all fees in loan</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="includeFees" value="yes" required> Yes
+                    </label>
+                    <label>
+                        <input type="radio" name="includeFees" value="no"> No
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group" id="feesGroup" style="display: none;">
+                <label>Fees Amount ($)</label>
+                <input type="number" id="fees">
+            </div>
+
+            <div class="form-group">
+                <label>Annual Interest Rate (%)</label>
+                <input type="number" step="0.01" id="interestRate" required>
+            </div>
+
+            <div class="form-group">
+                <label>Loan Term (months)</label>
+                <input type="number" id="loanTerm" required>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="calculate-btn">Calculate</button>
+                <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+            </div>
+        </form>
+
+        <div class="error" id="errorMessage"></div>
+
+        <div class="results" id="results">
+            <h3>Monthly Payment: $<span id="monthlyPayment"></span></h3>
+            <h4>Amortization Schedule</h4>
+            <table id="schedule">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Payment</th>
+                        <th>Principal</th>
+                        <th>Interest</th>
+                        <th>Remaining Balance</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <section class="about-content">
+        <h2>About the Boat Loan Calculator</h2>
+        <p>This Boat Loan Calculator helps you estimate your monthly payments and understand the full repayment schedule for your boat financing. By inputting the loan amount, interest rate, and loan term, you can plan your budget effectively and make informed financial decisions.</p>
+        
+        <h3>How to Use:</h3>
+        <ol>
+            <li>Enter the total loan amount for your boat purchase</li>
+            <li>Select whether to include additional fees in the loan</li>
+            <li>Input the annual interest rate offered by your lender</li>
+            <li>Specify the loan term in months</li>
+            <li>Click "Calculate" to see your monthly payment and amortization schedule</li>
+        </ol>
+
+        <h3>Why Use This Calculator?</h3>
+        <p>Understanding your boat loan details helps you:
+            <ul>
+                <li>Compare different financing options</li>
+                <li>Plan your monthly budget accurately</li>
+                <li>See how much interest you'll pay over time</li>
+                <li>Make informed decisions about down payments and loan terms</li>
+            </ul>
+        </p>
+    </section>
+
+    <script>
+        const form = document.getElementById('loanForm');
+        const feesGroup = document.getElementById('feesGroup');
+        const errorMessage = document.getElementById('errorMessage');
+        const results = document.getElementById('results');
+        
+        document.querySelectorAll('input[name="includeFees"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                feesGroup.style.display = radio.value === 'yes' ? 'block' : 'none';
+            });
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            errorMessage.style.display = 'none';
+            results.style.display = 'none';
+
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const includeFees = document.querySelector('input[name="includeFees"]:checked').value;
+            const fees = includeFees === 'yes' ? parseFloat(document.getElementById('fees').value) || 0 : 0;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) / 100;
+            const loanTerm = parseInt(document.getElementById('loanTerm').value);
+
+            if (!loanAmount || loanAmount <= 0) {
+                showError('Please enter a valid loan amount');
+                return;
+            }
+
+            if (includeFees === 'yes' && (isNaN(fees) || fees < 0)) {
+                showError('Please enter valid fees amount');
+                return;
+            }
+
+            if (!interestRate || interestRate <= 0 || interestRate > 1) {
+                showError('Please enter a valid interest rate (0-100%)');
+                return;
+            }
+
+            if (!loanTerm || loanTerm <= 0) {
+                showError('Please enter a valid loan term');
+                return;
+            }
+
+            const principal = loanAmount + fees;
+            const monthlyRate = interestRate / 12;
+            const monthlyPayment = (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -loanTerm));
+            
+            document.getElementById('monthlyPayment').textContent = monthlyPayment.toFixed(2);
+            generateSchedule(principal, monthlyPayment, monthlyRate, loanTerm);
+            results.style.display = 'block';
+        });
+
+        function generateSchedule(principal, monthlyPayment, monthlyRate, loanTerm) {
+            const tbody = document.querySelector('#schedule tbody');
+            tbody.innerHTML = '';
+            let balance = principal;
+
+            for (let month = 1; month <= loanTerm; month++) {
+                const interest = balance * monthlyRate;
+                const principalPayment = monthlyPayment - interest;
+                balance -= principalPayment;
+
+                const row = `
+                    <tr>
+                        <td>${month}</td>
+                        <td>$${monthlyPayment.toFixed(2)}</td>
+                        <td>$${principalPayment.toFixed(2)}</td>
+                        <td>$${interest.toFixed(2)}</td>
+                        <td>$${Math.abs(balance).toFixed(2)}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            }
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        function clearForm() {
+            form.reset();
+            results.style.display = 'none';
+            errorMessage.style.display = 'none';
+            feesGroup.style.display = 'none';
+            document.querySelector('#schedule tbody').innerHTML = '';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/pokémon-damage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Pokémon Damage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/partial-derivative-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Partial Derivative Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/d&d-5e-point-buy-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">D&D 5e Point Buy Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/cubic-yards-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Cubic Yards Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/percent-off-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Percent Off Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/weighted-grade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Weighted Grade Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
