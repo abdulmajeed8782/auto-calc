@@ -24,6 +24,12 @@
     "fileName": "basic-calculator.html"
   },
   {
+    "name": "blox-fruits-trade-calculator",
+    "description": "Calculates and compares trade values for in-game items with demand metrics.",
+    "category": "gaming",
+    "fileName": "blox-fruits-trade-calculator.html"
+  },
+  {
     "name": "BMI Calculator",
     "description": "Calculate your Body Mass Index (BMI) to determine if your weight is in a healthy range.",
     "category": "health",
