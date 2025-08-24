@@ -66,6 +66,12 @@
     "fileName": "currency-converter.html"
   },
   {
+    "name": "double-integral-calculator",
+    "description": "Computes double integrals over specified regions with step-by-step solutions.",
+    "category": "math",
+    "fileName": "double-integral-calculator.html"
+  },
+  {
     "name": "final-grade-calculator",
     "description": "Calculates the required final exam score needed to achieve a desired course grade based on current grades and weights.",
     "category": "education",
