@@ -24,6 +24,12 @@
     "fileName": "basic-calculator.html"
   },
   {
+    "name": "blox-fruit-trade-calculator",
+    "description": "Calculates and compares trade values for Blox Fruits items based on in-game metrics.",
+    "category": "gaming",
+    "fileName": "blox-fruit-trade-calculator.html"
+  },
+  {
     "name": "blox-fruits-trade-calculator",
     "description": "Calculates and compares trade values for in-game items with demand metrics.",
     "category": "gaming",
