@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="surface-area-calculator">
+    <meta name="calculator-description" content="Calculates the surface area of geometric shapes with unit conversion and significant figures customization.">
+    <meta name="calculator-category" content="math">
+    <title>Surface Area Calculator</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #3b82f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f8fafc;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        .calculator-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .calculate-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .clear-btn {
+            background: #64748b;
+            color: white;
+        }
+
+        .results {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f1f5f9;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error {
+            color: #dc2626;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav a {
+                margin: 0 1rem;
+            }
+
+            .calculator-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="calculator-container">
+        <form id="calculatorForm">
+            <div class="input-group">
+                <label>Choose a Calculation</label>
+                <select id="shape">
+                    <option value="cube">Cube</option>
+                    <option value="cone">Cone</option>
+                    <option value="capsule">Capsule</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Side length a</label>
+                <input type="number" id="sideA" step="any">
+            </div>
+
+            <div class="input-group">
+                <label>Height h</label>
+                <input type="number" id="height" step="any">
+            </div>
+
+            <div class="input-group">
+                <label>Units</label>
+                <select id="units">
+                    <option>meters</option>
+                    <option>centimeters</option>
+                    <option>millimeters</option>
+                    <option>inches</option>
+                    <option>feet</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Significant Figures</label>
+                <select id="sigFigs">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                </select>
+            </div>
+
+            <div class="error" id="errorMessage"></div>
+
+            <div class="button-group">
+                <button type="button" class="calculate-btn" onclick="calculate()">Calculate</button>
+                <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+            </div>
+
+            <div class="results" id="results">
+                <strong>Surface Area:</strong> <span id="resultValue">0</span> <span id="unitDisplay"></span>
+            </div>
+        </form>
+    </div>
+
+    <section class="about-content">
+        <h2>About the Surface Area Calculator</h2>
+        <p>This calculator helps determine the surface area of various geometric shapes including cubes, cones, and capsules. It's an essential tool for students, engineers, and DIY enthusiasts working with three-dimensional objects.</p>
+        
+        <h3>How to Use:</h3>
+        <ol>
+            <li>Select the geometric shape from the dropdown menu</li>
+            <li>Enter the required dimensions (all fields must be positive numbers)</li>
+            <li>Choose your preferred measurement units</li>
+            <li>Select the number of significant figures for your result</li>
+            <li>Click Calculate to get instant results</li>
+        </ol>
+
+        <h3>Key Features:</h3>
+        <ul>
+            <li>Supports multiple geometric shapes</li>
+            <li>Unit conversion between metric and imperial systems</li>
+            <li>Customizable precision with significant figures</li>
+            <li>Instant error checking and validation</li>
+        </ul>
+    </section>
+
+    <script>
+        function calculate() {
+            const shape = document.getElementById('shape').value;
+            const a = parseFloat(document.getElementById('sideA').value);
+            const h = parseFloat(document.getElementById('height').value);
+            const units = document.getElementById('units').value;
+            const sigFigs = parseInt(document.getElementById('sigFigs').value);
+            const error = document.getElementById('errorMessage');
+            const results = document.getElementById('results');
+            const resultValue = document.getElementById('resultValue');
+            const unitDisplay = document.getElementById('unitDisplay');
+
+            error.style.display = 'none';
+            results.style.display = 'none';
+
+            if (isNaN(a) || isNaN(h) || a <= 0 || h <= 0) {
+                error.textContent = 'Please enter valid positive numbers for all dimensions';
+                error.style.display = 'block';
+                return;
+            }
+
+            let surfaceArea;
+            switch(shape) {
+                case 'cube':
+                    surfaceArea = 6 * Math.pow(a, 2);
+                    break;
+                case 'cone':
+                    surfaceArea = Math.PI * a * (a + Math.sqrt(Math.pow(h, 2) + Math.pow(a, 2)));
+                    break;
+                case 'capsule':
+                    surfaceArea = 2 * Math.PI * a * (2 * a + h);
+                    break;
+                default:
+                    surfaceArea = 0;
+            }
+
+            const roundedResult = surfaceArea.toPrecision(sigFigs);
+            resultValue.textContent = roundedResult;
+            unitDisplay.textContent = units + '²';
+            results.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/critical-value-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Critical Value Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/percent-error-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Percent Error Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/blox-fruit-trade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Blox Fruit Trade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/triple-integral-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Triple Integral Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/female-delusion-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Female Delusion Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/inverse-matrix-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Inverse Matrix Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
