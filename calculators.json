@@ -228,6 +228,12 @@
     "fileName": "tip-calculator.html"
   },
   {
+    "name": "triple-integral-calculator",
+    "description": "Calculates triple integrals over a specified three-dimensional region.",
+    "category": "mathematics",
+    "fileName": "triple-integral-calculator.html"
+  },
+  {
     "name": "weighted-grade-calculator",
     "description": "Calculates weighted grades, allows final grade planning, and supports multiple grade/weight formats.",
     "category": "education",
