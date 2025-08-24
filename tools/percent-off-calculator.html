@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="percent-off-calculator">
+    <meta name="calculator-description" content="Calculates the discounted price and savings based on a percentage off.">
+    <meta name="calculator-category" content="finance">
+    <title>Percent Off Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .calculator-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #764ba2;
+        }
+
+        .clear-btn {
+            background: #6c757d;
+            margin-left: 1rem;
+        }
+
+        .results {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .error {
+            color: #dc3545;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            nav a {
+                margin: 0 0.5rem;
+            }
+
+            .calculator-container {
+                margin: 0 1rem;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-container">
+            <h1>Percent Off Calculator</h1>
+            <form id="calculatorForm">
+                <div class="form-group">
+                    <label>Original Price ($)</label>
+                    <input type="number" id="originalPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Percent Off (%)</label>
+                    <input type="number" id="percentOff" required>
+                </div>
+                <div class="form-group">
+                    <div class="radio-group">
+                        <label><input type="radio" name="option" value="Yes"> Yes</label>
+                        <label><input type="radio" name="option" value="No"> No</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+            </form>
+            <div class="error" id="errorMessage"></div>
+            <div class="results" id="results"></div>
+        </div>
+
+        <section class="about-content">
+            <h2>About This Calculator</h2>
+            <p>This Percent Off Calculator helps you quickly determine the discounted price and actual savings when an item is offered at a percentage discount. Simply enter the original price and the percentage discount to see both the final price you'll pay and the amount you'll save.</p>
+            
+            <h3>How to Use</h3>
+            <ol>
+                <li>Enter the original price of the item in dollars</li>
+                <li>Input the percentage discount being offered</li>
+                <li>Click "Calculate" to see your savings and final price</li>
+            </ol>
+
+            <h3>Why It's Useful</h3>
+            <p>This tool is essential for smart shopping decisions, budget planning, and comparing deals. It eliminates manual calculations and provides instant, accurate results to help you make informed purchasing choices.</p>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const originalPrice = parseFloat(document.getElementById('originalPrice').value);
+            const percentOff = parseFloat(document.getElementById('percentOff').value);
+            const errorElement = document.getElementById('errorMessage');
+            const resultsElement = document.getElementById('results');
+
+            errorElement.style.display = 'none';
+            resultsElement.innerHTML = '';
+
+            if (isNaN(originalPrice) || originalPrice <= 0) {
+                showError('Please enter a valid original price');
+                return;
+            }
+
+            if (isNaN(percentOff) || percentOff <= 0 || percentOff >= 100) {
+                showError('Please enter a valid percentage (1-99)');
+                return;
+            }
+
+            const discountedPrice = originalPrice * (1 - (percentOff / 100));
+            const savings = originalPrice - discountedPrice;
+
+            resultsElement.innerHTML = `
+                <p>Discounted Price: $${discountedPrice.toFixed(2)}</p>
+                <p>Total Savings: $${savings.toFixed(2)}</p>
+            `;
+        });
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/weighted-grade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Weighted Grade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/blox-fruits-trade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Blox Fruits Trade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/square-footage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Square Footage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/chipotle-calorie-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Chipotle Calorie Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/breeding-combos-&-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Breeding Combos & Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/double-integral-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Double Integral Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
