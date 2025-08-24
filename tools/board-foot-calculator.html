@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="board-foot-calculator">
+    <meta name="calculator-description" content="Calculates the board feet of lumber based on dimensions and quantity.">
+    <meta name="calculator-category" content="converter">
+    <title>Board Foot Calculator - ToolHub</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        .calculate-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e53e3e;
+            color: white;
+        }
+
+        .results {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .about-content {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+
+            nav a {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Board Foot Calculator</h1>
+            <form id="calculatorForm">
+                <div class="form-group">
+                    <label>Thickness (in)</label>
+                    <input type="text" id="thickness" required>
+                </div>
+                <div class="form-group">
+                    <label>Width (in)</label>
+                    <input type="text" id="width" required>
+                </div>
+                <div class="form-group">
+                    <label>Length (in)</label>
+                    <input type="text" id="length" required>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="text" id="quantity" required>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="calculate-btn" onclick="calculateBoardFeet()">Calculate</button>
+                    <button type="button" class="clear-btn" onclick="clearForm()">Clear</button>
+                </div>
+                <div class="error-message" id="errorMessage"></div>
+                <div class="results" id="results">
+                    <strong>Board Feet:</strong> <span id="boardFeetResult"></span>
+                </div>
+            </form>
+        </div>
+
+        <section class="about-content">
+            <h2>About Board Foot Calculations</h2>
+            <p>A board foot is a unit of measurement for lumber equal to 1 inch thick, 12 inches wide, and 12 inches long (144 cubic inches). This calculator helps you determine the total board feet for your lumber projects quickly and accurately.</p>
+            
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Enter the thickness in inches</li>
+                <li>Input the width in inches</li>
+                <li>Provide the length in inches</li>
+                <li>Enter the number of pieces</li>
+                <li>Click "Calculate" to get results</li>
+            </ol>
+
+            <h3>Why It's Useful:</h3>
+            <p>Understanding board feet helps with material estimation, cost calculations, and project planning for woodworking and construction projects. This tool eliminates manual calculations and reduces errors in lumber quantity estimation.</p>
+        </section>
+    </main>
+
+    <script>
+        function calculateBoardFeet() {
+            const thickness = parseFloat(document.getElementById('thickness').value);
+            const width = parseFloat(document.getElementById('width').value);
+            const length = parseFloat(document.getElementById('length').value);
+            const quantity = parseFloat(document.getElementById('quantity').value);
+            const errorMessage = document.getElementById('errorMessage');
+            const results = document.getElementById('results');
+
+            errorMessage.style.display = 'none';
+            results.style.display = 'none';
+
+            if (isNaN(thickness) || isNaN(width) || isNaN(length) || isNaN(quantity) ||
+                thickness <= 0 || width <= 0 || length <= 0 || quantity <= 0) {
+                errorMessage.textContent = 'Please enter valid positive numbers in all fields';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const boardFeet = (thickness * width * length / 144) * quantity;
+            document.getElementById('boardFeetResult').textContent = boardFeet.toFixed(2);
+            results.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.getElementById('calculatorForm').reset();
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/pokemon-damage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Pokemon Damage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/5e-point-buy-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">5e Point Buy Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/cubic-yards-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Cubic Yards Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/blox-fruits-trade-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Blox Fruits Trade Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/square-footage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Square Footage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/palworld-breeding-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Palworld Breeding Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
