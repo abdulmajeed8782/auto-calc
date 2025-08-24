@@ -259,8 +259,8 @@
   },
   {
     "name": "square-footage-calculator",
-    "description": "Calculates the area of various geometric shapes and provides cost estimates based on optional pricing.",
-    "category": "converter",
+    "description": "Calculates area for various geometric shapes with unit conversion and optional cost estimation.",
+    "category": "math",
     "fileName": "square-footage-calculator.html"
   },
   {
