@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="calculator-name" content="blox-fruit-trade-calculator">
+    <meta name="calculator-description" content="Calculates and compares trade values for Blox Fruits items based on in-game metrics.">
+    <meta name="calculator-category" content="gaming">
+    <title>Blox Fruit Trade Calculator</title>
+    <style>
+        :root {
+            --header-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-color: #4a5568;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: var(--header-gradient);
+            padding: 1rem 0;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .brand a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+
+        button {
+            background: var(--header-gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        .results-table td, .results-table th {
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .about-content {
+            background: #f7fafc;
+            padding: 2rem;
+            border-radius: 10px;
+            line-height: 1.6;
+            margin-top: 2rem;
+        }
+
+        .about-content h2 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="brand"><a href="../index.html">ToolHub</a></div>
+            <nav>
+                <a href="../about-us.html">About</a>
+                <a href="../contact-us.html">Contact</a>
+                <a href="../privacy-policy.html">Privacy</a>
+                <a href="../index.html">Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="calculator-card">
+            <h1>Blox Fruit Trade Calculator</h1>
+            <div class="calculator-grid">
+                <div class="offer-section">
+                    <h3>Your Offer</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" data-value="1200" data-demand="1.2">
+                            Dark Blade (Value: 1,200)
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" data-value="3500" data-demand="0.8">
+                            Dragon Fruit (Value: 3,500)
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" data-value="2500" data-demand="1.1">
+                            Leopard Fruit (Value: 2,500)
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="counteroffer-section">
+                    <h3>Their Offer</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" data-value="1200" data-demand="1.2">
+                            Dark Blade (Value: 1,200)
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" data-value="3500" data-demand="0.8">
+                            Dragon Fruit (Value: 3,500)
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" data-value="2500" data-demand="1.1">
+                            Leopard Fruit (Value: 2,500)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button onclick="calculateTrade()">Calculate</button>
+                <button onclick="clearForm()" style="margin-left: 1rem; background: #718096">Clear</button>
+            </div>
+
+            <div class="error-message" id="errorMessage">Please select at least one item in both offers</div>
+
+            <div id="resultsSection" style="display: none">
+                <table class="results-table">
+                    <tr>
+                        <th>Your Total Value</th>
+                        <th>Their Total Value</th>
+                        <th>Fairness Score</th>
+                    </tr>
+                    <tr>
+                        <td id="offerTotal">0</td>
+                        <td id="counterofferTotal">0</td>
+                        <td id="fairnessScore">0</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <section class="about-content">
+            <h2>About This Calculator</h2>
+            <p>The Blox Fruit Trade Calculator helps players evaluate the fairness of in-game item trades by comparing values adjusted for market demand. By selecting items from both sides of a proposed trade, the calculator automatically computes a Fairness Score to help determine if the exchange is equitable.</p>
+            
+            <h3>How to Use</h3>
+            <ol>
+                <li>Check items you're offering in the left column</li>
+                <li>Check items you're receiving in the right column</li>
+                <li>Click Calculate to see trade valuation</li>
+                <li>Compare total values and fairness score</li>
+            </ol>
+
+            <h3>Why It's Useful</h3>
+            <p>This tool accounts for both base item values and current demand multipliers, providing a more accurate assessment than simple value comparisons. The Fairness Score helps prevent unfair trades by highlighting significant value discrepancies between offers.</p>
+        </section>
+    </main>
+
+    <script>
+        function calculateTrade() {
+            const offerItems = document.querySelectorAll('.offer-section input[type="checkbox"]:checked');
+            const counterItems = document.querySelectorAll('.counteroffer-section input[type="checkbox"]:checked');
+            const errorMessage = document.getElementById('errorMessage');
+            const resultsSection = document.getElementById('resultsSection');
+
+            if (offerItems.length === 0 || counterItems.length === 0) {
+                errorMessage.style.display = 'block';
+                resultsSection.style.display = 'none';
+                return;
+            }
+
+            errorMessage.style.display = 'none';
+
+            let offerTotal = Array.from(offerItems).reduce((sum, item) => {
+                return sum + (parseFloat(item.dataset.value) * parseFloat(item.dataset.demand));
+            }, 0);
+
+            let counterofferTotal = Array.from(counterItems).reduce((sum, item) => {
+                return sum + (parseFloat(item.dataset.value) * parseFloat(item.dataset.demand));
+            }, 0);
+
+            const fairnessScore = (offerTotal / counterofferTotal).toFixed(2);
+
+            document.getElementById('offerTotal').textContent = offerTotal.toLocaleString();
+            document.getElementById('counterofferTotal').textContent = counterofferTotal.toLocaleString();
+            document.getElementById('fairnessScore').textContent = fairnessScore;
+            resultsSection.style.display = 'block';
+        }
+
+        function clearForm() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+            document.getElementById('resultsSection').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+
+    <section class="related-calculators" style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 12px;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Related Calculators</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/triple-integral-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Triple Integral Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/female-delusion-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Female Delusion Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/inverse-matrix-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Inverse Matrix Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/board-footage-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Board Footage Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/mixed-fraction-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Mixed Fraction Calculator</h4>
+                </div>
+            </a>
+
+            <a href="https://calculator-online.github.io/auto-calc-test-02-02/tools/boat-loan-calculator.html" style="text-decoration: none; color: inherit;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <h4 style="color: #667eea; margin: 0; font-size: 1rem;">Boat Loan Calculator</h4>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+</body>
+</html>
