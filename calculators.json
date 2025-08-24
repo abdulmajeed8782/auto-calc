@@ -1,5 +1,11 @@
 [
   {
+    "name": "5e-point-buy-calculator",
+    "description": "Allocates Dungeons & Dragons 5th edition character ability scores using a point buy system with customizable rules and racial modifiers.",
+    "category": "gaming",
+    "fileName": "5e-point-buy-calculator.html"
+  },
+  {
     "name": "Automation Test Calculator",
     "description": "A simple word and character counter to test the automation script.",
     "category": "testing",
