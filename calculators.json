@@ -168,6 +168,12 @@
     "fileName": "partial-derivative-calculator.html"
   },
   {
+    "name": "percent-error-calculator",
+    "description": "Calculates the percentage error between observed and true values.",
+    "category": "calculation",
+    "fileName": "percent-error-calculator.html"
+  },
+  {
     "name": "percent-off-calculator",
     "description": "Calculates the discounted price and savings based on a percentage off.",
     "category": "finance",
