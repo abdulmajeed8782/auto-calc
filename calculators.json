@@ -156,6 +156,12 @@
     "fileName": "grade-calculator.html"
   },
   {
+    "name": "inverse-function-calculator",
+    "description": "Calculates the inverse of a given mathematical function.",
+    "category": "mathematics",
+    "fileName": "inverse-function-calculator.html"
+  },
+  {
     "name": "inverse-matrix-calculator",
     "description": "Calculates the inverse of a square matrix using specified dimensions.",
     "category": "mathematics",
